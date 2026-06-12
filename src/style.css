@@ -1,0 +1,90 @@
+@tailwind base;
+
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Lucida Grande";
+    src: url("./assets/fonts/LucidaGrande.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    color-scheme: light;
+    background: #ffffff;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    background: #000000;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-width: 320px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background: #ffffff;
+    color: #000000;
+    font-family: "Lucida Grande", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  :root[data-theme="dark"] body {
+    background: #000000;
+    color: #ffffff;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button,
+  select {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply min-h-screen bg-paper-50 text-ink-950 transition-colors duration-200 dark:bg-ink-950 dark:text-paper-50;
+  }
+
+  .panel {
+    @apply min-w-0 border border-ink-950/10 bg-paper-50/95 shadow-soft backdrop-blur-xl dark:border-paper-50/10 dark:bg-ink-900/95 dark:shadow-darkSoft;
+  }
+
+  .control {
+    @apply w-full min-w-0 rounded-lg border border-ink-950/10 bg-paper-100 px-3 text-ink-950 outline-none transition focus:border-signal-blue focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/10 dark:bg-ink-850 dark:text-paper-50 dark:focus:ring-signal-blue/25;
+  }
+
+  .icon-button {
+    @apply inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-ink-950/10 bg-paper-100 text-ink-700 transition hover:border-signal-blue hover:bg-signal-blue/10 hover:text-signal-blue focus:outline-none focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/10 dark:bg-ink-850 dark:text-paper-300 dark:hover:bg-signal-blue/15;
+  }
+
+  .code-pane {
+    @apply max-h-[34rem] overflow-auto rounded-lg bg-ink-950 p-4 font-mono text-[0.82rem] leading-6 text-paper-100 shadow-inner dark:bg-black;
+  }
+
+  .empty-pane {
+    @apply rounded-lg border border-dashed border-ink-950/15 bg-paper-100 p-4 text-sm leading-6 text-ink-700 dark:border-paper-50/15 dark:bg-ink-850 dark:text-paper-300;
+  }
+}
