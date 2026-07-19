@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { nextTick, useId, useTemplateRef, watch } from 'vue';
 import { X } from 'lucide-vue-next';
+import { useFocusTrap } from '@/composables/useFocusTrap';
 
 defineProps<{ title: string }>();
 const open = defineModel<boolean>('open', { required: true });
@@ -17,35 +18,7 @@ function close() {
   open.value = false;
 }
 
-function focusableEls(): HTMLElement[] {
-  const root = dialogRef.value;
-  if (!root) return [];
-  return Array.from(
-    root.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    ),
-  ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
-}
-
-function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    event.preventDefault();
-    close();
-    return;
-  }
-  if (event.key !== 'Tab') return;
-  const els = focusableEls();
-  if (els.length === 0) return;
-  const first = els[0];
-  const last = els[els.length - 1];
-  if (event.shiftKey && document.activeElement === first) {
-    event.preventDefault();
-    last.focus();
-  } else if (!event.shiftKey && document.activeElement === last) {
-    event.preventDefault();
-    first.focus();
-  }
-}
+const { onKeydown } = useFocusTrap(dialogRef, close);
 </script>
 
 <template>
