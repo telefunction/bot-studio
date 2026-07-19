@@ -5,8 +5,8 @@
 
 @layer base {
   @font-face {
-    font-family: "Lucida Grande";
-    src: url("./assets/fonts/LucidaGrande.ttf") format("truetype");
+    font-family: 'Lucida Grande';
+    src: url('./assets/fonts/LucidaGrande.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -19,7 +19,7 @@
     background: var(--page-bg);
   }
 
-  :root[data-theme="dark"] {
+  :root[data-theme='dark'] {
     color-scheme: dark;
     --page-bg: #17212b;
     --panel-bg: #232e3c;
@@ -41,7 +41,9 @@
     overflow-x: hidden;
     background: var(--page-bg);
     color: #000000;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Lucida Grande", ui-sans-serif, system-ui, sans-serif;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Lucida Grande', ui-sans-serif,
+      system-ui, sans-serif;
     /* Only the regular (400) weight of Lucida Grande is bundled, so requests for
        600/700/900 would otherwise be faux-bolded into a blurry, non-Telegram look.
        Disabling synthesis lets the OS-native face (which has real bold masters)
@@ -49,7 +51,7 @@
     font-synthesis: none;
   }
 
-  :root[data-theme="dark"] body {
+  :root[data-theme='dark'] body {
     background: var(--page-bg);
     color: #ffffff;
   }

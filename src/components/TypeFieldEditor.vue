@@ -362,7 +362,8 @@ function setUnionValue(value: unknown) {
       <FileJson class="h-3.5 w-3.5 shrink-0" />
       <span>Raw JSON{{ node.kind === "custom" ? ` — ${node.type.name}` : "" }}</span>
     </div>
-    <textarea v-model="draft" class="control min-h-20 resize-y py-2 font-mono text-xs" placeholder="{ }"
+    <textarea
+v-model="draft" class="control min-h-20 resize-y py-2 font-mono text-xs" placeholder="{ }"
       spellcheck="false" @input="onDraftInput" />
     <p v-if="draftError" class="mt-1 text-[0.7rem] font-semibold text-signal-red">Invalid JSON — keeping the last valid
       value.</p>
@@ -371,9 +372,11 @@ function setUnionValue(value: unknown) {
   <!-- Denser step of the same two-step checkbox scale as ParameterInput.vue's top-level boolean
   (16px here vs. 20px there) — same rounded/border/accent treatment and the same True/False label
   flip, just sized for a builder panel that can stack many fields. -->
-  <label v-else-if="node.kind === 'primitive' && (node.name === 'Boolean' || node.name === 'True')"
+  <label
+v-else-if="node.kind === 'primitive' && (node.name === 'Boolean' || node.name === 'True')"
     class="flex items-center gap-2 text-sm font-bold text-ink-700 dark:text-paper-300">
-    <input v-model="boolModel" type="checkbox"
+    <input
+v-model="boolModel" type="checkbox"
       class="h-4 w-4 cursor-pointer rounded border-2 border-ink-950/20 accent-signal-blue transition hover:scale-105 dark:border-paper-50/20 dark:accent-signal-blueDark" />
     <span>{{ boolModel ? "True" : "False" }}</span>
   </label>
@@ -382,14 +385,17 @@ function setUnionValue(value: unknown) {
   top-level form's h-11 primary inputs (ParameterInput.vue), and shared consistently by every
   single-line control in this file (this input, the file-like input below, and the array-of-primitive
   item inputs further down) so a String field looks the same everywhere inside the builder. -->
-  <input v-else-if="node.kind === 'primitive' && (node.name === 'Integer' || node.name === 'Float')"
+  <input
+v-else-if="node.kind === 'primitive' && (node.name === 'Integer' || node.name === 'Float')"
     v-model="scalarModel" type="number" class="control h-9 text-sm" :placeholder="scalarPlaceholder" />
 
-  <textarea v-else-if="node.kind === 'primitive' && longText" v-model="scalarModel"
+  <textarea
+v-else-if="node.kind === 'primitive' && longText" v-model="scalarModel"
     class="control min-h-24 resize-y py-2 text-sm" :placeholder="scalarPlaceholder" />
 
   <div v-else-if="node.kind === 'primitive' && fileLikeField" class="flex min-w-0 items-center gap-1.5">
-    <input v-model="scalarModel" type="text" class="control h-9 min-w-0 flex-1 text-sm"
+    <input
+v-model="scalarModel" type="text" class="control h-9 min-w-0 flex-1 text-sm"
       placeholder="file_id / URL / filename" />
     <label class="icon-button h-9 w-9 shrink-0" title="Fill from a local file's name">
       <Upload class="h-3.5 w-3.5" />
@@ -397,20 +403,24 @@ function setUnionValue(value: unknown) {
     </label>
   </div>
 
-  <input v-else-if="node.kind === 'primitive'" v-model="scalarModel" type="text" class="control h-9 text-sm"
+  <input
+v-else-if="node.kind === 'primitive'" v-model="scalarModel" type="text" class="control h-9 text-sm"
     :placeholder="scalarPlaceholder" />
 
-  <div v-else-if="node.kind === 'custom'"
+  <div
+v-else-if="node.kind === 'custom'"
     class="min-w-0 space-y-3 rounded-lg border border-ink-950/[0.06] bg-paper-50/70 p-3 dark:border-paper-50/[0.06] dark:bg-navy-900/40">
     <div v-for="entry in customFieldEntries" :key="entry.field.name" class="min-w-0">
-      <div v-if="entry.heavy"
+      <div
+v-if="entry.heavy"
         class="rounded-md border border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800">
         <!-- flex-wrap (not a plain single-line flex row): the hint+chevron chunk on the right is
         shrink-0 and won't give up width, so on a narrow container a long field name used to get
         squeezed into whatever sliver was left over and wrap across many cramped lines. Letting the
         row wrap drops the hint+chevron to their own line below instead, so the label gets the full
         row width to wrap into at most a couple of lines. -->
-        <button type="button" class="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1 px-2.5 py-2 text-left"
+        <button
+type="button" class="flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1 px-2.5 py-2 text-left"
           @click="toggleExpanded(entry.field.name)">
           <span class="min-w-0 text-xs font-bold text-ink-700 dark:text-paper-300">
             {{ displayName(entry.field.name) }}
@@ -421,18 +431,22 @@ function setUnionValue(value: unknown) {
               {{ subFieldHint(entry.childNode, (model as Record<string, unknown> | null)?.[entry.field.name],
                 entry.visited) }}
             </span>
-            <ChevronDown class="h-3.5 w-3.5 shrink-0 transition-transform duration-200"
+            <ChevronDown
+class="h-3.5 w-3.5 shrink-0 transition-transform duration-200"
               :class="{ 'rotate-180': isExpanded(entry.field.name) }" />
           </span>
         </button>
-        <div class="grid transition-[grid-template-rows] duration-200 ease-out"
+        <div
+class="grid transition-[grid-template-rows] duration-200 ease-out"
           :style="{ gridTemplateRows: isExpanded(entry.field.name) ? '1fr' : '0fr' }">
           <div class="overflow-hidden">
             <div class="border-t border-ink-950/[0.08] p-2.5 dark:border-paper-50/[0.08]">
               <span :class="fieldTypePillClass">{{ entry.field.type }}</span>
-              <ExpandableText v-if="entry.field.description" tag="p" :text="entry.field.description" :lines="2"
+              <ExpandableText
+v-if="entry.field.description" tag="p" :text="entry.field.description" :lines="2"
                 :class="fieldDescriptionClass" />
-              <TypeFieldEditor class="mt-1.5" :node="entry.childNode" :schema="schema" :depth="depth + 1"
+              <TypeFieldEditor
+class="mt-1.5" :node="entry.childNode" :schema="schema" :depth="depth + 1"
                 :visited="entry.visited" :field="entry.field"
                 :model-value="(model as Record<string, unknown> | null)?.[entry.field.name]"
                 @update:model-value="(value) => setField(entry.field.name, value)" />
@@ -448,9 +462,11 @@ function setUnionValue(value: unknown) {
           </label>
           <span :class="fieldTypePillClass">{{ entry.field.type }}</span>
         </div>
-        <ExpandableText v-if="entry.field.description" tag="p" :text="entry.field.description" :lines="2"
+        <ExpandableText
+v-if="entry.field.description" tag="p" :text="entry.field.description" :lines="2"
           :class="fieldDescriptionClass" />
-        <TypeFieldEditor class="mt-1.5" :node="entry.childNode" :schema="schema" :depth="depth + 1"
+        <TypeFieldEditor
+class="mt-1.5" :node="entry.childNode" :schema="schema" :depth="depth + 1"
           :visited="entry.visited" :field="entry.field"
           :model-value="(model as Record<string, unknown> | null)?.[entry.field.name]"
           @update:model-value="(value) => setField(entry.field.name, value)" />
@@ -459,31 +475,37 @@ function setUnionValue(value: unknown) {
   </div>
 
   <div v-else-if="node.kind === 'array' && node.of.kind === 'array'" class="min-w-0 space-y-3">
-    <div v-for="(row, rowIndex) in rows2D" :key="rowIndex"
+    <div
+v-for="(row, rowIndex) in rows2D" :key="rowIndex"
       class="rounded-lg border border-ink-950/[0.08] bg-paper-100 p-2.5 dark:border-paper-50/[0.08] dark:bg-navy-900">
       <div class="mb-2 flex items-center justify-between gap-2">
         <span class="text-[0.68rem] font-black uppercase tracking-wide text-ink-700 dark:text-paper-300">Row {{ rowIndex
           +
           1 }}</span>
         <div class="flex items-center gap-1">
-          <button type="button" class="icon-button h-7 w-7" :disabled="rowIndex === 0" title="Move row up"
+          <button
+type="button" class="icon-button h-7 w-7" :disabled="rowIndex === 0" title="Move row up"
             @click="moveRow(rowIndex, -1)">
             <MoveUp class="h-3.5 w-3.5" />
           </button>
-          <button type="button" class="icon-button h-7 w-7" :disabled="rowIndex === rows2D.length - 1"
+          <button
+type="button" class="icon-button h-7 w-7" :disabled="rowIndex === rows2D.length - 1"
             title="Move row down" @click="moveRow(rowIndex, 1)">
             <MoveDown class="h-3.5 w-3.5" />
           </button>
-          <button type="button" class="icon-button h-7 w-7 hover:border-signal-red hover:text-signal-red"
+          <button
+type="button" class="icon-button h-7 w-7 hover:border-signal-red hover:text-signal-red"
             title="Remove row" @click="removeRow(rowIndex)">
             <Trash2 class="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
       <div class="space-y-2">
-        <div v-for="(item, itemIndex) in row" :key="itemIndex"
+        <div
+v-for="(item, itemIndex) in row" :key="itemIndex"
           class="rounded-md border border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800">
-          <button type="button"
+          <button
+type="button"
             class="flex w-full items-center justify-between gap-2 px-2.5 py-2 text-left text-xs font-bold"
             @click="toggleExpanded(`${rowIndex}:${itemIndex}`)">
             <span class="truncate">{{ node.of.of.kind === "custom" ? summarizeCustomValue(node.of.of, item, `Item
@@ -492,15 +514,18 @@ function setUnionValue(value: unknown) {
               <span class="icon-button h-6 w-6" title="Remove" @click.stop="removeItem2D(rowIndex, itemIndex)">
                 <Trash2 class="h-3 w-3" />
               </span>
-              <ChevronDown class="h-3.5 w-3.5 transition-transform duration-200"
+              <ChevronDown
+class="h-3.5 w-3.5 transition-transform duration-200"
                 :class="{ 'rotate-180': isExpanded(`${rowIndex}:${itemIndex}`) }" />
             </span>
           </button>
-          <div class="grid transition-[grid-template-rows] duration-200 ease-out"
+          <div
+class="grid transition-[grid-template-rows] duration-200 ease-out"
             :style="{ gridTemplateRows: isExpanded(`${rowIndex}:${itemIndex}`) ? '1fr' : '0fr' }">
             <div class="overflow-hidden">
               <div class="border-t border-ink-950/[0.08] p-2.5 dark:border-paper-50/[0.08]">
-                <TypeFieldEditor :node="node.of.of" :schema="schema" :depth="depth + 2" :visited="visited"
+                <TypeFieldEditor
+:node="node.of.of" :schema="schema" :depth="depth + 2" :visited="visited"
                   :model-value="item" @update:model-value="(value) => setItem2D(rowIndex, itemIndex, value)" />
               </div>
             </div>
@@ -519,12 +544,15 @@ function setUnionValue(value: unknown) {
   <div
     v-else-if="node.kind === 'array' && node.of.kind === 'primitive' && (node.of.name === 'Boolean' || node.of.name === 'True')"
     class="min-w-0 space-y-2">
-    <label v-for="(item, index) in items" :key="index"
+    <label
+v-for="(item, index) in items" :key="index"
       class="flex items-center gap-2 text-sm font-bold text-ink-700 dark:text-paper-300">
-      <input type="checkbox"
+      <input
+type="checkbox"
         class="h-4 w-4 cursor-pointer rounded border-2 border-ink-950/20 accent-signal-blue transition hover:scale-105 dark:border-paper-50/20 dark:accent-signal-blueDark"
         :checked="item === true" @change="setArrayItem(index, ($event.target as HTMLInputElement).checked)" />
-      <button type="button" class="icon-button h-7 w-7 hover:border-signal-red hover:text-signal-red"
+      <button
+type="button" class="icon-button h-7 w-7 hover:border-signal-red hover:text-signal-red"
         @click="removeArrayItem(index)">
         <Trash2 class="h-3.5 w-3.5" />
       </button>
@@ -536,11 +564,13 @@ function setUnionValue(value: unknown) {
 
   <div v-else-if="node.kind === 'array' && node.of.kind === 'primitive'" class="min-w-0 space-y-2">
     <div v-for="(item, index) in items" :key="index" class="flex items-center gap-2">
-      <input :type="node.of.name === 'Integer' || node.of.name === 'Float' ? 'number' : 'text'"
+      <input
+:type="node.of.name === 'Integer' || node.of.name === 'Float' ? 'number' : 'text'"
         class="control h-9 flex-1 text-sm" :value="typeof item === 'string' || typeof item === 'number' ? item : ''"
         :placeholder="`${branchLabel(node.of)} ${index + 1}`"
         @input="setArrayItem(index, ($event.target as HTMLInputElement).value)" />
-      <button type="button" class="icon-button h-8 w-8 shrink-0 hover:border-signal-red hover:text-signal-red"
+      <button
+type="button" class="icon-button h-8 w-8 shrink-0 hover:border-signal-red hover:text-signal-red"
         title="Remove" @click="removeArrayItem(index)">
         <Trash2 class="h-3.5 w-3.5" />
       </button>
@@ -551,9 +581,11 @@ function setUnionValue(value: unknown) {
   </div>
 
   <div v-else-if="node.kind === 'array'" class="min-w-0 space-y-2">
-    <div v-for="(item, index) in items" :key="index"
+    <div
+v-for="(item, index) in items" :key="index"
       class="rounded-md border border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-900">
-      <button type="button"
+      <button
+type="button"
         class="flex w-full items-center justify-between gap-2 px-2.5 py-2 text-left text-xs font-bold"
         @click="toggleExpanded(`i:${index}`)">
         <span class="truncate">{{ node.of.kind === "custom" ? summarizeCustomValue(node.of, item, `Item ${index + 1}`) :
@@ -562,15 +594,18 @@ function setUnionValue(value: unknown) {
           <span class="icon-button h-6 w-6" title="Remove" @click.stop="removeArrayItem(index)">
             <Trash2 class="h-3 w-3" />
           </span>
-          <ChevronDown class="h-3.5 w-3.5 transition-transform duration-200"
+          <ChevronDown
+class="h-3.5 w-3.5 transition-transform duration-200"
             :class="{ 'rotate-180': isExpanded(`i:${index}`) }" />
         </span>
       </button>
-      <div class="grid transition-[grid-template-rows] duration-200 ease-out"
+      <div
+class="grid transition-[grid-template-rows] duration-200 ease-out"
         :style="{ gridTemplateRows: isExpanded(`i:${index}`) ? '1fr' : '0fr' }">
         <div class="overflow-hidden">
           <div class="border-t border-ink-950/[0.08] p-2.5 dark:border-paper-50/[0.08]">
-            <TypeFieldEditor :node="node.of" :schema="schema" :depth="depth + 1" :visited="visited" :model-value="item"
+            <TypeFieldEditor
+:node="node.of" :schema="schema" :depth="depth + 1" :visited="visited" :model-value="item"
               @update:model-value="(value) => setArrayItem(index, value)" />
           </div>
         </div>
@@ -582,16 +617,19 @@ function setUnionValue(value: unknown) {
   </div>
 
   <div v-else-if="node.kind === 'union'" class="min-w-0">
-    <div v-if="resolvableBranchIndices.length > 1"
+    <div
+v-if="resolvableBranchIndices.length > 1"
       class="mb-3 flex flex-wrap gap-1.5 rounded-lg bg-paper-200 p-1 dark:bg-navy-900">
-      <button v-for="index in resolvableBranchIndices" :key="index" type="button"
+      <button
+v-for="index in resolvableBranchIndices" :key="index" type="button"
         class="rounded-md px-2.5 py-1.5 text-xs font-bold transition"
         :class="effectiveVariant === index ? 'bg-paper-50 text-signal-blueHover shadow-soft dark:bg-navy-700 dark:text-signal-blueBright' : 'text-ink-700 hover:text-signal-blueHover dark:text-paper-300 dark:hover:text-signal-blueBright'"
         @click="selectVariant(index)">
         {{ branchLabel(node.branches[index]) }}
       </button>
     </div>
-    <TypeFieldEditor v-if="activeBranch" :node="activeBranch" :schema="schema" :depth="depth + 1" :visited="visited"
+    <TypeFieldEditor
+v-if="activeBranch" :node="activeBranch" :schema="schema" :depth="depth + 1" :visited="visited"
       :model-value="unionState.value" @update:model-value="setUnionValue" />
   </div>
 </template>

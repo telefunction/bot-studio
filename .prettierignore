@@ -1,0 +1,8 @@
+dist
+docs
+node_modules
+package-lock.json
+
+# prettier's vue template parser mis-tokenizes `Record<string, unknown>` inside a
+# mustache expression as an HTML tag; ESLint still formats/lints this file fine.
+src/components/TypeFieldEditor.vue

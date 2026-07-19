@@ -1,6 +1,15 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from "vue";
-import { ChevronDown } from "lucide-vue-next";
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  useId,
+  useTemplateRef,
+  watch,
+} from 'vue';
+import { ChevronDown } from 'lucide-vue-next';
 
 const props = withDefaults(
   defineProps<{
@@ -8,21 +17,21 @@ const props = withDefaults(
     lines?: number;
     tag?: string;
   }>(),
-  { lines: 3, tag: "p" }
+  { lines: 3, tag: 'p' },
 );
 
 const clampClasses: Record<number, string> = {
-  1: "line-clamp-1",
-  2: "line-clamp-2",
-  3: "line-clamp-3",
-  4: "line-clamp-4"
+  1: 'line-clamp-1',
+  2: 'line-clamp-2',
+  3: 'line-clamp-3',
+  4: 'line-clamp-4',
 };
-const clampClass = computed(() => clampClasses[props.lines] ?? "line-clamp-3");
+const clampClass = computed(() => clampClasses[props.lines] ?? 'line-clamp-3');
 
 const textId = useId();
-const rootRef = ref<HTMLElement | null>(null);
-const wrapperRef = ref<HTMLElement | null>(null);
-const textRef = ref<HTMLElement | null>(null);
+const rootRef = useTemplateRef<HTMLElement>('rootRef');
+const wrapperRef = useTemplateRef<HTMLElement>('wrapperRef');
+const textRef = useTemplateRef<HTMLElement>('textRef');
 
 const expanded = ref(false);
 const displayExpanded = ref(false);
@@ -31,7 +40,9 @@ const collapsedHeight = ref(0);
 const fullHeight = ref(0);
 const currentMaxHeight = ref(0);
 
-const wrapperStyle = computed(() => (overflowing.value ? { maxHeight: `${currentMaxHeight.value}px` } : {}));
+const wrapperStyle = computed(() =>
+  overflowing.value ? { maxHeight: `${currentMaxHeight.value}px` } : {},
+);
 
 async function measure() {
   await nextTick();
@@ -75,7 +86,7 @@ function onTextClick() {
 }
 
 function onTransitionEnd(event: TransitionEvent) {
-  if (event.target !== wrapperRef.value || event.propertyName !== "max-height") return;
+  if (event.target !== wrapperRef.value || event.propertyName !== 'max-height') return;
   if (!expanded.value) {
     displayExpanded.value = false;
     // Re-measure now that the clamp class is back on the DOM, so a stale
@@ -103,26 +114,43 @@ watch(
     expanded.value = false;
     displayExpanded.value = false;
     measure();
-  }
+  },
 );
 </script>
 
 <template>
   <component :is="tag" ref="rootRef" class="group relative">
-    <div ref="wrapperRef" :class="[
-      'overflow-hidden transition-[max-height] duration-300 ease-out',
-      overflowing ? 'cursor-pointer' : ''
-    ]" :style="wrapperStyle" @transitionend="onTransitionEnd" @click="onTextClick">
+    <div
+      ref="wrapperRef"
+      :class="[
+        'overflow-hidden transition-[max-height] duration-300 ease-out',
+        overflowing ? 'cursor-pointer' : '',
+      ]"
+      :style="wrapperStyle"
+      @transitionend="onTransitionEnd"
+      @click="onTextClick"
+    >
       <div :id="textId" ref="textRef" :class="displayExpanded ? '' : clampClass">{{ text }}</div>
     </div>
     <template v-if="overflowing">
-      <span v-if="!displayExpanded" aria-hidden="true"
-        class="pointer-events-none absolute bottom-0 right-0 h-5 w-10 rounded-md bg-gradient-to-l from-paper-50 to-transparent dark:from-navy-700"></span>
-      <button type="button"
+      <span
+        v-if="!displayExpanded"
+        aria-hidden="true"
+        class="pointer-events-none absolute bottom-0 right-0 h-5 w-10 rounded-md bg-gradient-to-l from-paper-50 to-transparent dark:from-navy-700"
+      ></span>
+      <button
+        type="button"
         class="absolute bottom-0 right-0 inline-flex h-5 w-5 items-center justify-center rounded-md border border-ink-950/[0.08] bg-paper-100 text-signal-blue shadow-soft transition hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover group-hover:border-signal-blueHover group-hover:bg-signal-blue/10 group-hover:text-signal-blueHover focus:outline-none focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-signal-blueDark dark:shadow-darkSoft dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:group-hover:border-signal-blueBright dark:group-hover:bg-signal-blueDark/15 dark:group-hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25"
-        :aria-expanded="expanded" :aria-controls="textId" :aria-label="expanded ? 'Show less' : 'Show more'"
-        :title="expanded ? 'Show less' : 'Show more'" @click="toggle">
-        <ChevronDown class="h-3 w-3 transition-transform duration-200" :class="{ 'rotate-180': expanded }" />
+        :aria-expanded="expanded"
+        :aria-controls="textId"
+        :aria-label="expanded ? 'Show less' : 'Show more'"
+        :title="expanded ? 'Show less' : 'Show more'"
+        @click="toggle"
+      >
+        <ChevronDown
+          class="h-3 w-3 transition-transform duration-200"
+          :class="{ 'rotate-180': expanded }"
+        />
       </button>
     </template>
   </component>

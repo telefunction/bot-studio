@@ -1,6 +1,6 @@
 {
   "name": "bot-studio",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +11,11 @@
     "schema:update": "node scripts/update-telegram-schema.mjs",
     "schema:check": "node scripts/update-telegram-schema.mjs --check",
     "validate": "node scripts/validate-project.mjs",
-    "validate:pages": "node scripts/validate-project.mjs --docs"
+    "validate:pages": "node scripts/validate-project.mjs --docs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "fix": "npm run format && npm run lint:fix"
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
@@ -20,10 +24,17 @@
     "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "autoprefixer": "^10.4.20",
+    "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.9.2",
+    "globals": "^17.7.0",
     "postcss": "^8.4.49",
+    "prettier": "^3.9.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.64.0",
     "vue-tsc": "^2.2.0"
   }
 }

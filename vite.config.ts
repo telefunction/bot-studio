@@ -1,8 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath, URL } from "node:url";
-import vue from "@vitejs/plugin-vue";
-import { defineConfig, type Plugin, type ResolvedConfig } from "vite";
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath, URL } from 'node:url';
+import vue from '@vitejs/plugin-vue';
+import { defineConfig, type Plugin, type ResolvedConfig } from 'vite';
 
 const FONT_EXTENSIONS = /\.(?:ttf|woff2?|otf)$/i;
 
@@ -17,25 +17,25 @@ const FONT_EXTENSIONS = /\.(?:ttf|woff2?|otf)$/i;
  * isn't shipped unused alongside the inlined copy.
  */
 function inlineCssPlugin(): Plugin {
-  let assetsDir = "assets";
+  let assetsDir = 'assets';
 
   return {
-    name: "inline-css-into-html",
+    name: 'inline-css-into-html',
     configResolved(config: ResolvedConfig) {
-      assetsDir = config.build.assetsDir || "assets";
+      assetsDir = config.build.assetsDir || 'assets';
     },
     transformIndexHtml: {
-      order: "post",
+      order: 'post',
       handler(html, ctx) {
         const bundle = ctx.bundle;
         if (!bundle) return html;
 
-        let cssContent = "";
+        let cssContent = '';
         const cssFileNames: string[] = [];
         for (const [fileName, output] of Object.entries(bundle)) {
-          if (output.type === "asset" && fileName.endsWith(".css")) {
+          if (output.type === 'asset' && fileName.endsWith('.css')) {
             const source = output.source;
-            cssContent += typeof source === "string" ? source : source.toString();
+            cssContent += typeof source === 'string' ? source : source.toString();
             cssFileNames.push(fileName);
           }
         }
@@ -51,12 +51,12 @@ function inlineCssPlugin(): Plugin {
         // what they point to.
         cssContent = cssContent.replace(/url\((['"]?)([^'")]+)\1\)/g, (match, quote, url) => {
           if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#|%23)/i.test(url)) return match;
-          const cleaned = url.replace(/^\.\//, "");
+          const cleaned = url.replace(/^\.\//, '');
           return `url(${quote}${assetsDir}/${cleaned}${quote})`;
         });
 
-        let result = html.replace(/<link[^>]*rel=["']stylesheet["'][^>]*>\s*/gi, "");
-        result = result.replace("</head>", `<style>${cssContent}</style>\n  </head>`);
+        let result = html.replace(/<link[^>]*rel=["']stylesheet["'][^>]*>\s*/gi, '');
+        result = result.replace('</head>', `<style>${cssContent}</style>\n  </head>`);
 
         // Drop the CSS asset(s) from the bundle so the orphaned .css file
         // isn't written to docs/assets alongside the inlined copy.
@@ -65,8 +65,8 @@ function inlineCssPlugin(): Plugin {
         }
 
         return result;
-      }
-    }
+      },
+    },
   };
 }
 
@@ -83,23 +83,23 @@ function inlineCssPlugin(): Plugin {
  * `.../bot-studio/` or `.../bot-studio/sendMessage`.
  */
 function spaFallbackPlugin(): Plugin {
-  let outDir = "docs";
+  let outDir = 'docs';
   let root = process.cwd();
 
   return {
-    name: "spa-404-fallback",
+    name: 'spa-404-fallback',
     configResolved(config: ResolvedConfig) {
       outDir = config.build.outDir;
       root = config.root;
     },
     closeBundle() {
       const resolvedOutDir = path.isAbsolute(outDir) ? outDir : path.resolve(root, outDir);
-      const indexPath = path.join(resolvedOutDir, "index.html");
-      const notFoundPath = path.join(resolvedOutDir, "404.html");
+      const indexPath = path.join(resolvedOutDir, 'index.html');
+      const notFoundPath = path.join(resolvedOutDir, '404.html');
       if (fs.existsSync(indexPath)) {
         fs.copyFileSync(indexPath, notFoundPath);
       }
-    }
+    },
   };
 }
 
@@ -113,30 +113,30 @@ function spaFallbackPlugin(): Plugin {
  * git-tracked source file untouched.
  */
 function minifySchemaPlugin(): Plugin {
-  let outDir = "docs";
+  let outDir = 'docs';
   let root = process.cwd();
 
   return {
-    name: "minify-schema-json",
+    name: 'minify-schema-json',
     configResolved(config: ResolvedConfig) {
       outDir = config.build.outDir;
       root = config.root;
     },
     closeBundle() {
       const resolvedOutDir = path.isAbsolute(outDir) ? outDir : path.resolve(root, outDir);
-      const schemaPath = path.join(resolvedOutDir, "schema", "bot-api.json");
+      const schemaPath = path.join(resolvedOutDir, 'schema', 'bot-api.json');
       if (!fs.existsSync(schemaPath)) return;
-      const parsed = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+      const parsed = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
       fs.writeFileSync(schemaPath, JSON.stringify(parsed));
-    }
+    },
   };
 }
 
 export default defineConfig({
-  base: "./",
+  base: './',
   plugins: [vue(), inlineCssPlugin(), spaFallbackPlugin(), minifySchemaPlugin()],
   build: {
-    outDir: "docs",
+    outDir: 'docs',
     emptyOutDir: true,
     rollupOptions: {
       output: {
@@ -146,18 +146,18 @@ export default defineConfig({
         // assets a stable, non-hashed name; everything else (JS chunks, CSS,
         // images) keeps Vite's default hashed naming.
         assetFileNames: (assetInfo) => {
-          const name = assetInfo.name ?? "";
+          const name = assetInfo.names[0] ?? '';
           if (FONT_EXTENSIONS.test(name)) {
-            return "assets/[name][extname]";
+            return 'assets/[name][extname]';
           }
-          return "assets/[name]-[hash][extname]";
-        }
-      }
-    }
+          return 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
   },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url))
-    }
-  }
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
 });

@@ -32,7 +32,7 @@ export type TelegramSchema = {
 };
 
 export type FileValue = {
-  mode: "text" | "file";
+  mode: 'text' | 'file';
   text: string;
   file: File | null;
 };
@@ -40,12 +40,12 @@ export type FileValue = {
 export type ParamValue = string | boolean | FileValue;
 
 export type ResponseState = {
-  status: "waiting" | "loading" | "ok" | "failed" | string;
+  status: 'waiting' | 'loading' | 'ok' | 'failed' | string;
   payload: unknown;
   error: string;
 };
 
-export type NoticeTone = "success" | "error" | "warning" | "info";
+export type NoticeTone = 'success' | 'error' | 'warning' | 'info';
 
 export type Notice = {
   id: number;

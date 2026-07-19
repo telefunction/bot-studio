@@ -9,7 +9,11 @@
 // drops the user's exact whitespace.
 
 function escapeHtml(text: string): string {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 const NUMBER_RE = /-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/y;
@@ -27,7 +31,7 @@ function readStringLiteral(source: string, start: number): { raw: string; end: n
   let i = start + 1;
   while (i < source.length) {
     const ch = source[i];
-    if (ch === "\\") {
+    if (ch === '\\') {
       i += 2;
       continue;
     }
@@ -41,8 +45,8 @@ function readStringLiteral(source: string, start: number): { raw: string; end: n
 }
 
 export function highlightJson(source: string): string {
-  if (!source) return "";
-  let out = "";
+  if (!source) return '';
+  let out = '';
   let i = 0;
   const len = source.length;
 
@@ -61,14 +65,14 @@ export function highlightJson(source: string): string {
       const { raw, end } = readStringLiteral(source, i);
       let j = end;
       while (j < len && /\s/.test(source[j])) j += 1;
-      const isKey = source[j] === ":";
-      out += span(isKey ? "tok-key" : "tok-string", raw);
+      const isKey = source[j] === ':';
+      out += span(isKey ? 'tok-key' : 'tok-string', raw);
       i = end;
       continue;
     }
 
-    if (ch === "{" || ch === "}" || ch === "[" || ch === "]" || ch === ":" || ch === ",") {
-      out += span("tok-punct", ch);
+    if (ch === '{' || ch === '}' || ch === '[' || ch === ']' || ch === ':' || ch === ',') {
+      out += span('tok-punct', ch);
       i += 1;
       continue;
     }
@@ -76,7 +80,7 @@ export function highlightJson(source: string): string {
     KEYWORD_RE.lastIndex = i;
     const kwMatch = KEYWORD_RE.exec(source);
     if (kwMatch) {
-      out += span(kwMatch[0] === "null" ? "tok-null" : "tok-boolean", kwMatch[0]);
+      out += span(kwMatch[0] === 'null' ? 'tok-null' : 'tok-boolean', kwMatch[0]);
       i += kwMatch[0].length;
       continue;
     }
@@ -84,7 +88,7 @@ export function highlightJson(source: string): string {
     NUMBER_RE.lastIndex = i;
     const numMatch = NUMBER_RE.exec(source);
     if (numMatch && numMatch[0].length > 0) {
-      out += span("tok-number", numMatch[0]);
+      out += span('tok-number', numMatch[0]);
       i += numMatch[0].length;
       continue;
     }

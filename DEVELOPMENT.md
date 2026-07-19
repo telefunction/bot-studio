@@ -43,6 +43,14 @@ Preview the production build locally:
 npm run preview
 ```
 
+Lint and format the whole project:
+
+```bash
+npm run fix
+```
+
+This runs Prettier (`format`) followed by ESLint's autofix (`lint:fix`), so both formatting and auto-fixable lint issues are resolved in one command. See [Linting & Formatting](#linting--formatting) for details.
+
 ## Scripts
 
 | Command                    | Description                                                            |
@@ -50,11 +58,27 @@ npm run preview
 | `npm run dev`              | Start Vite dev server.                                                 |
 | `npm run build`            | Validate scripts/schema, type-check Vue, and build into `docs/`.       |
 | `npm run preview`          | Preview the built site locally.                                        |
+| `npm run fix`              | Format with Prettier, then auto-fix with ESLint.                       |
+| `npm run format`           | Format all files with Prettier.                                        |
+| `npm run lint`             | Check all files with ESLint (no changes).                              |
+| `npm run lint:fix`         | Check with ESLint and auto-fix what it can.                            |
 | `npm run validate`         | Validate the canonical schema in `public/schema/bot-api.json`.         |
 | `npm run validate:pages`   | Validate that `docs/schema/bot-api.json` matches the canonical schema. |
 | `npm run schema:update`    | Fetch and regenerate the Telegram Bot API schema.                      |
 | `npm run schema:check`     | Check whether the local schema is current.                             |
 | `npm run schema:normalize` | Normalize schema text and remove unsupported legacy fields.            |
+
+## Linting & Formatting
+
+The project uses ESLint (`eslint.config.js`, flat config) for Vue 3 + TypeScript rules and Prettier (`.prettierrc.json`) for formatting. `eslint-config-prettier` disables ESLint's own stylistic rules so the two never fight over the same line.
+
+```bash
+npm run fix        # format + auto-fix everything (recommended before committing)
+npm run lint       # check only, no changes
+npm run format     # Prettier only
+```
+
+`src/components/TypeFieldEditor.vue` is listed in `.prettierignore`: it contains a template expression with a multi-param TS generic (`Record<string, unknown>`) inside a mustache, which trips Prettier's Vue template parser. ESLint still lints/fixes that file normally.
 
 ## Schema Workflow
 
