@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { MIN_METHOD_COUNT, MIN_TYPE_COUNT } from './lib/schema-constraints.mjs';
 
 const schemaPath = new URL('../public/schema/bot-api.json', import.meta.url);
 const docsSchemaPath = new URL('../docs/schema/bot-api.json', import.meta.url);
@@ -15,11 +16,7 @@ if (!Array.isArray(schema.types) || schema.types.length === 0) {
   throw new Error('public/schema/bot-api.json must contain at least one type.');
 }
 
-if (
-  schema.generatedBy === 'bot-studio bootstrap schema' ||
-  schema.methods.length < 50 ||
-  schema.types.length < 100
-) {
+if (schema.methods.length < MIN_METHOD_COUNT || schema.types.length < MIN_TYPE_COUNT) {
   throw new Error(
     'public/schema/bot-api.json looks like a placeholder. Run npm run schema:update with a working docs connection.',
   );

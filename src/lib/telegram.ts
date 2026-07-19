@@ -226,25 +226,6 @@ export function buildPreviewPayload(
   );
 }
 
-export function buildRequestInit(
-  method: TelegramMethod | null,
-  values: Record<string, ParamValue>,
-): RequestInit {
-  return buildRequestInitFromPayload(buildPayload(method, values));
-}
-
-export function missingRequired(method: TelegramMethod | null, values: Record<string, ParamValue>) {
-  if (!method) return [];
-  return method.parameters.filter((parameter) => {
-    const value =
-      inferKind(parameter) === 'file'
-        ? fileParamValue(values[parameter.name])
-        : values[parameter.name];
-    if (value instanceof File) return false;
-    return parameter.required && !String(value ?? '').trim();
-  });
-}
-
 export function missingRequiredFromPayload(
   method: TelegramMethod | null,
   payload: Record<string, unknown>,

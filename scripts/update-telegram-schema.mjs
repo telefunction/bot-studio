@@ -1,26 +1,17 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { setTimeout as sleep } from 'node:timers/promises';
+import { decodeEntities } from './lib/entities.mjs';
+import { MIN_METHOD_COUNT, MIN_TYPE_COUNT } from './lib/schema-constraints.mjs';
 
 const source = 'https://core.telegram.org/bots/api';
 const outputPath = new URL('../public/schema/bot-api.json', import.meta.url);
 const outputDir = new URL('../public/schema/', import.meta.url);
 const checkOnly = process.argv.includes('--check');
 const generatedBy = 'scripts/update-telegram-schema.mjs';
-const minimumMethodCount = 50;
-const minimumTypeCount = 100;
 const requestTimeoutMs = 20_000;
 
 function text(value) {
-  return value
-    .replace(/<br\s*\/?>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
-    .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCharCode(Number.parseInt(code, 16)))
+  return decodeEntities(value.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]+>/g, ' '))
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -150,13 +141,13 @@ function comparableSchema(schema) {
 }
 
 function assertSchema(schema) {
-  if (schema.methods.length < minimumMethodCount) {
+  if (schema.methods.length < MIN_METHOD_COUNT) {
     throw new Error(
       `Parser produced too few methods (${schema.methods.length}). Telegram docs may have changed.`,
     );
   }
 
-  if (schema.types.length < minimumTypeCount) {
+  if (schema.types.length < MIN_TYPE_COUNT) {
     throw new Error(
       `Parser produced too few types (${schema.types.length}). Telegram docs may have changed.`,
     );
