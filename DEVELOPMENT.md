@@ -70,15 +70,13 @@ This runs Prettier (`format`) followed by ESLint's autofix (`lint:fix`), so both
 
 ## Linting & Formatting
 
-The project uses ESLint (`eslint.config.js`, flat config) for Vue 3 + TypeScript rules and Prettier (`.prettierrc.json`) for formatting. `eslint-config-prettier` disables ESLint's own stylistic rules so the two never fight over the same line.
+The project uses ESLint (`eslint.config.js`, flat config) for Vue 3 + TypeScript rules and Prettier (`.prettierrc.json`) for formatting. `eslint-config-prettier` disables ESLint's own stylistic rules so the two never fight over the same line. Prettier also runs `prettier-plugin-tailwindcss`, which auto-sorts Tailwind utility classes into a canonical order.
 
 ```bash
 npm run fix        # format + auto-fix everything (recommended before committing)
 npm run lint       # check only, no changes
 npm run format     # Prettier only
 ```
-
-`src/components/TypeFieldEditor.vue` is listed in `.prettierignore`: it contains a template expression with a multi-param TS generic (`Record<string, unknown>`) inside a mustache, which trips Prettier's Vue template parser. ESLint still lints/fixes that file normally.
 
 ## Schema Workflow
 
@@ -100,6 +98,6 @@ The workflow at `.github/workflows/update-bot-api-schema.yml` runs every hour (`
 1. Installs dependencies (`npm ci`).
 2. Updates the schema (`npm run schema:update`).
 3. Normalizes it (`npm run schema:normalize`).
-4. Rebuilds the GitHub Pages output (`npm run build`).
-5. Validates the Pages schema copy (`npm run validate:pages`).
-6. Commits and pushes `public/schema/bot-api.json` and `docs/` only if something actually changed — otherwise the run exits without a commit.
+4. Commits and pushes `public/schema/bot-api.json` only if something actually changed — otherwise the run exits without a commit.
+
+The workflow doesn't build or deploy anything itself. A commit pushed to `main` this way is enough to trigger `.github/workflows/deploy-pages.yml` on its own (it runs on every push to `main`), which rebuilds the site — including copying the updated schema into `docs/schema/bot-api.json` — and redeploys it to GitHub Pages.

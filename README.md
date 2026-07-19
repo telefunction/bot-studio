@@ -24,3 +24,7 @@ Bot Studio is a browser-based Telegram Bot API workspace for exploring methods, 
 ## Learn More
 
 See [DEVELOPMENT.md](./DEVELOPMENT.md) for the full script reference, project structure, and schema-update workflow.
+
+## License
+
+GPL-3.0-only. See [LICENSE](./LICENSE).
