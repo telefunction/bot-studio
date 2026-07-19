@@ -23,8 +23,9 @@ pnpm-debug.log*
 coverage/
 .nyc_output/
 
-# Build output not used for GitHub Pages
+# Build output (deployed via GitHub Actions, not committed)
 dist/
+docs/
 
 # OS and editor files
 .DS_Store

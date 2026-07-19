@@ -34,21 +34,15 @@ jobs:
       - name: Normalize schema
         run: npm run schema:normalize
 
-      - name: Build GitHub Pages output
-        run: npm run build
-
-      - name: Validate Pages schema copy
-        run: npm run validate:pages
-
-      - name: Commit schema and Pages build
+      - name: Commit schema update
         run: |
-          if [ -z "$(git status --porcelain -- public/schema/bot-api.json docs)" ]; then
-            echo "No schema or Pages changes to commit."
+          if [ -z "$(git status --porcelain -- public/schema/bot-api.json)" ]; then
+            echo "No schema changes to commit."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/schema/bot-api.json docs
+          git add public/schema/bot-api.json
           git commit -m "chore: update Telegram Bot API schema"
           git push
