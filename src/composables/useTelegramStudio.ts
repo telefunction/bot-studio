@@ -166,8 +166,28 @@ export function useTelegramStudio() {
   const defaultTitle = typeof document !== 'undefined' ? document.title : 'Bot Studio';
   const defaultDescription = metaDescriptionEl?.getAttribute('content') ?? '';
 
+  // The app is built with a relative `base` (see vite.config.ts) so the same
+  // docs/ output works whether it's served from a domain root or, as on
+  // GitHub Pages project sites, from a one-segment subpath like
+  // `/bot-studio/`. window.location.pathname always includes that subpath,
+  // so splitting it directly would count `/bot-studio/getUpdates` as two
+  // segments and misreport a real method page as an unmatched (404) route.
+  // The entry <script type="module"> tag's resolved `src` always lives one
+  // directory below the app root (assets/<name>.js, see the
+  // `assetFileNames` config below), so walking up one level from it gives
+  // the deployed root regardless of what subpath it's hosted under.
+  const appBasePathname = (() => {
+    if (typeof document === 'undefined') return '/';
+    const script = document.querySelector<HTMLScriptElement>('script[type="module"][src]');
+    if (!script) return '/';
+    return new URL('..', script.src).pathname;
+  })();
+
   function pathSegments(pathname: string): string[] {
-    return pathname
+    const relative = pathname.startsWith(appBasePathname)
+      ? pathname.slice(appBasePathname.length)
+      : pathname;
+    return relative
       .split('/')
       .filter(Boolean)
       .map((segment) => {
