@@ -110,7 +110,7 @@ onUnmounted(cancelPendingGrowth);
         @click="onMethodClick($event, method)"
       >
         <strong class="block truncate text-sm font-black">{{ method.name }}</strong>
-        <span class="mt-1 truncate block text-xs leading-5 text-ink-700 dark:text-paper-300">
+        <span class="mt-1 block truncate text-xs leading-5 text-ink-700 dark:text-paper-300">
           {{ method.description || 'No description available.' }}
         </span>
       </a>

@@ -163,7 +163,7 @@ watch(responseFullscreen, (isOpen, wasOpen) => {
     </section>
 
     <FullscreenModal v-model:open="requestFullscreen" title="Request JSON">
-      <div class="code-pane json-editor-shell min-h-0 max-h-none w-full flex-1 text-base leading-7">
+      <div class="code-pane json-editor-shell max-h-none min-h-0 w-full flex-1 text-base leading-7">
         <!-- eslint-disable vue/no-v-html -- highlightJson() escapes all source text; only its own generated <span> wrappers are unescaped. -->
         <pre
           ref="requestFullscreenBackdropEl"
@@ -203,7 +203,7 @@ watch(responseFullscreen, (isOpen, wasOpen) => {
       <!-- eslint-disable vue/no-v-html -- highlightJson() escapes all source text; only its own generated <span> wrappers are unescaped. -->
       <pre
         v-if="responseText"
-        class="code-pane min-h-0 max-h-none w-full flex-1 text-base leading-7"
+        class="code-pane max-h-none min-h-0 w-full flex-1 text-base leading-7"
         v-html="highlightedResponse"
       ></pre>
       <!-- eslint-enable vue/no-v-html -->

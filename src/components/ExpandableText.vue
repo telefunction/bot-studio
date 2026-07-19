@@ -140,7 +140,7 @@ watch(
       ></span>
       <button
         type="button"
-        class="absolute bottom-0 right-0 inline-flex h-5 w-5 items-center justify-center rounded-md border border-ink-950/[0.08] bg-paper-100 text-signal-blue shadow-soft transition hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover group-hover:border-signal-blueHover group-hover:bg-signal-blue/10 group-hover:text-signal-blueHover focus:outline-none focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-signal-blueDark dark:shadow-darkSoft dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:group-hover:border-signal-blueBright dark:group-hover:bg-signal-blueDark/15 dark:group-hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25"
+        class="absolute bottom-0 right-0 inline-flex h-5 w-5 items-center justify-center rounded-md border border-ink-950/[0.08] bg-paper-100 text-signal-blue shadow-soft transition hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:outline-none focus:ring-4 focus:ring-signal-blue/15 group-hover:border-signal-blueHover group-hover:bg-signal-blue/10 group-hover:text-signal-blueHover dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-signal-blueDark dark:shadow-darkSoft dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25 dark:group-hover:border-signal-blueBright dark:group-hover:bg-signal-blueDark/15 dark:group-hover:text-signal-blueBright"
         :aria-expanded="expanded"
         :aria-controls="textId"
         :aria-label="expanded ? 'Show less' : 'Show more'"
