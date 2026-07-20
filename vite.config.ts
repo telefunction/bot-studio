@@ -18,10 +18,25 @@ function resolveOutDir(config: ResolvedConfig): string {
  * an external <link rel="stylesheet">, blocks first render on an extra
  * network round-trip. For a bundle this small it's cheaper to inline the
  * whole thing into index.html as a <style> tag than to add a critical-CSS
- * extraction step. This finds whatever CSS asset Vite emitted (name/hash
- * varies per build), inlines its content into <head>, drops the now-redundant
- * <link rel="stylesheet">, and removes the CSS asset from the bundle so it
- * isn't shipped unused alongside the inlined copy.
+ * extraction step. This finds the CSS asset(s) Vite linked into *this* HTML
+ * document (name/hash varies per build), inlines their content into <head>,
+ * drops the now-redundant <link rel="stylesheet">, and removes those CSS
+ * assets from the bundle so they aren't shipped unused alongside the inlined
+ * copy.
+ *
+ * Deliberately scoped to only the CSS Vite actually linked from the HTML
+ * (via the `<link rel="stylesheet" href="...">` tags it inserts for the
+ * eagerly-loaded entry), not every `.css` file in the bundle: a lazy-loaded
+ * component (anything behind `defineAsyncComponent`, e.g. TypeEditorModal)
+ * that ships its own `<style>` gets its CSS split into a separate per-chunk
+ * file that Vite's runtime fetches via a dynamically-inserted <link> the
+ * moment that chunk is imported — it's never linked from index.html at all.
+ * An earlier version of this plugin deleted every `.css` file it found
+ * regardless of origin, which silently deleted that per-chunk file from the
+ * output; the first time someone triggered the lazy import in production,
+ * Vite's runtime tried to preload the (now-missing) stylesheet, got a 404,
+ * and threw ("Unable to preload CSS for ..."), aborting the dynamic import
+ * and breaking that lazy component entirely.
  */
 function inlineCssPlugin(): Plugin {
   let assetsDir = 'assets';
@@ -37,14 +52,19 @@ function inlineCssPlugin(): Plugin {
         const bundle = ctx.bundle;
         if (!bundle) return html;
 
+        const linkedFileNames = [
+          ...html.matchAll(/<link[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi),
+        ].map((match) => match[1].replace(/^\.?\//, ''));
+        if (linkedFileNames.length === 0) return html;
+
         let cssContent = '';
         const cssFileNames: string[] = [];
-        for (const [fileName, output] of Object.entries(bundle)) {
-          if (output.type === 'asset' && fileName.endsWith('.css')) {
-            const source = output.source;
-            cssContent += typeof source === 'string' ? source : source.toString();
-            cssFileNames.push(fileName);
-          }
+        for (const fileName of linkedFileNames) {
+          const output = bundle[fileName];
+          if (!output || output.type !== 'asset') continue;
+          const source = output.source;
+          cssContent += typeof source === 'string' ? source : source.toString();
+          cssFileNames.push(fileName);
         }
         if (!cssContent) return html;
 
