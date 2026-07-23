@@ -8,9 +8,7 @@
 export const PRIVACY_NOTICE_COOKIE = 'bot-studio.privacy-notice-seen';
 
 export function getCookie(name: string): string | null {
-  const match = document.cookie
-    .split('; ')
-    .find((entry) => entry.startsWith(`${name}=`));
+  const match = document.cookie.split('; ').find((entry) => entry.startsWith(`${name}=`));
   if (!match) return null;
   return decodeURIComponent(match.slice(name.length + 1));
 }

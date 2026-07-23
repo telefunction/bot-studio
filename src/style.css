@@ -57,8 +57,7 @@
     background:
       radial-gradient(1100px circle at 12% -10%, var(--aurora-1), transparent 55%),
       radial-gradient(900px circle at 100% 8%, var(--aurora-2), transparent 50%),
-      radial-gradient(800px circle at 20% 120%, var(--aurora-3), transparent 55%),
-      var(--page-bg);
+      radial-gradient(800px circle at 20% 120%, var(--aurora-3), transparent 55%), var(--page-bg);
     background-attachment: fixed;
     color: #000000;
     font-family:
@@ -153,7 +152,7 @@
   }
 
   .control {
-    @apply w-full min-w-0 rounded-lg border border-ink-950/[0.08] bg-paper-100 px-3 text-ink-950 outline-none transition duration-200 ease-out hover:border-ink-950/20 focus:border-signal-blue focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:hover:border-paper-50/20 dark:bg-navy-900 dark:text-paper-50 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25;
+    @apply w-full min-w-0 rounded-lg border border-ink-950/[0.08] bg-paper-100 px-3 text-ink-950 outline-none transition duration-200 ease-out hover:border-ink-950/20 focus:border-signal-blue focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:text-paper-50 dark:hover:border-paper-50/20 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25;
   }
 
   .icon-button {

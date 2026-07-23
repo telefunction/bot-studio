@@ -41,7 +41,7 @@ withDefaults(
       </button>
       <span
         role="tooltip"
-        class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md border border-ink-950/[0.08] bg-paper-50 px-2 py-1 font-mono text-[0.68rem] font-bold text-ink-950 opacity-0 shadow-soft transition duration-150 group-hover/type:translate-y-0 group-hover/type:opacity-100 group-focus-within/type:translate-y-0 group-focus-within/type:opacity-100 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft"
+        class="pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md border border-ink-950/[0.08] bg-paper-50 px-2 py-1 font-mono text-[0.68rem] font-bold text-ink-950 opacity-0 shadow-soft transition duration-150 group-focus-within/type:translate-y-0 group-focus-within/type:opacity-100 group-hover/type:translate-y-0 group-hover/type:opacity-100 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft"
       >
         {{ type }}
       </span>

@@ -42,7 +42,8 @@ const fieldDescriptionClass =
 // instead of every level improvising its own tone. A custom type's own field list is deliberately
 // never boxed itself — that would just draw a second, purposeless border around whatever box its
 // caller (an item disclosure, a field disclosure, or the modal's own panel) already drew.
-const boxClass = 'rounded-lg border border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800';
+const boxClass =
+  'rounded-lg border border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800';
 
 // The clickable header row of every disclosure (a custom field folded behind a toggle, a 2D-array
 // item, a plain-array item) — one shared class so all three read as the same kind of control
@@ -730,7 +731,10 @@ function setUnionValue(value: unknown) {
     </button>
   </div>
 
-  <div v-else-if="node.kind === 'array' && node.of.kind === 'primitive'" class="min-w-0 space-y-2.5">
+  <div
+    v-else-if="node.kind === 'array' && node.of.kind === 'primitive'"
+    class="min-w-0 space-y-2.5"
+  >
     <div v-for="(item, index) in items" :key="index" class="flex items-start gap-2">
       <FieldControl
         :model-value="typeof item === 'string' || typeof item === 'number' ? String(item) : ''"

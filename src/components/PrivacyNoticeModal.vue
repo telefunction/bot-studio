@@ -78,9 +78,10 @@ const { onKeydown } = useFocusTrap(dialogRef, dismiss);
             >
               <p class="text-ink-950 dark:text-paper-50">
                 Bot Studio has <span class="font-black">no backend</span>. There is no server
-                operated by this project sitting between you and Telegram — every request you
-                build here is sent
-                <span class="font-black">directly from your browser to Telegram's own servers</span>.
+                operated by this project sitting between you and Telegram — every request you build
+                here is sent
+                <span class="font-black">directly from your browser to Telegram's own servers</span
+                >.
               </p>
 
               <div class="space-y-3">
@@ -91,8 +92,8 @@ const { onKeydown } = useFocusTrap(dialogRef, dismiss);
                     <ShieldOff class="h-4 w-4" />
                   </div>
                   <p class="text-ink-700 dark:text-paper-300">
-                    Nobody else can see, log, or intercept your bot token — there's simply no
-                    server in the middle to do so.
+                    Nobody else can see, log, or intercept your bot token — there's simply no server
+                    in the middle to do so.
                   </p>
                 </div>
                 <div class="flex items-start gap-3">
@@ -103,8 +104,8 @@ const { onKeydown } = useFocusTrap(dialogRef, dismiss);
                   </div>
                   <p class="text-ink-700 dark:text-paper-300">
                     Your token lives only in this browser tab's memory for the current session —
-                    it's never written to disk or transmitted anywhere except straight to
-                    Telegram's API.
+                    it's never written to disk or transmitted anywhere except straight to Telegram's
+                    API.
                   </p>
                 </div>
               </div>

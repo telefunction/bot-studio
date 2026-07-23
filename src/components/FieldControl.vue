@@ -128,7 +128,13 @@ function startResize(event: MouseEvent) {
       title="Drag to resize"
       @mousedown="startResize"
     >
-      <svg viewBox="0 0 10 10" class="h-2.5 w-2.5" fill="none" stroke="currentColor" stroke-width="1.2">
+      <svg
+        viewBox="0 0 10 10"
+        class="h-2.5 w-2.5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.2"
+      >
         <path d="M1 9L9 1M4 9L9 4M7 9L9 7" stroke-linecap="round" />
       </svg>
     </div>
