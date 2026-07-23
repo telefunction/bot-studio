@@ -101,3 +101,7 @@ The workflow at `.github/workflows/update-bot-api-schema.yml` runs every hour (`
 4. Commits and pushes `public/schema/bot-api.json` only if something actually changed — otherwise the run exits without a commit.
 
 The workflow doesn't build or deploy anything itself. A commit pushed to `main` this way is enough to trigger `.github/workflows/deploy-pages.yml` on its own (it runs on every push to `main`), which rebuilds the site — including copying the updated schema into `docs/schema/bot-api.json` — and redeploys it to GitHub Pages.
+
+---
+
+Built with the help of [Claude Code](https://claude.com/claude-code).
