@@ -229,7 +229,6 @@ function fieldValue(key: string): unknown {
 type CustomFieldEntry = {
   field: TelegramParameter;
   childNode: TypeNode;
-  collapsible: boolean;
   visited: string[];
 };
 
@@ -237,20 +236,16 @@ type CustomFieldEntry = {
  * Precomputes each subfield's resolved node kind once per render (rather than re-parsing it separately for
  * the disclosure check and for the recursive editor prop). Every field — scalar or nested — renders behind
  * the same closed-by-default disclosure (see the `custom` branch of the template) so the form reads as one
- * consistent list instead of scalars and nested objects looking/behaving differently; the one exception is
- * `collapsible` below.
+ * consistent list instead of scalars and nested objects looking/behaving differently, regardless of how many
+ * fields its parent type has (e.g. InlineKeyboardMarkup's lone `inline_keyboard` field still gets boxed).
  */
 const customFieldEntries = computed<CustomFieldEntry[]>(() => {
   if (props.node.kind !== 'custom') return [];
   const parentTypeName = props.node.type.name;
   const visited = nextVisitedFor(parentTypeName);
-  // A field only gets collapsed behind a disclosure when doing so actually declutters something: a type
-  // whose *only* field is itself heavy (e.g. InlineKeyboardMarkup, whose one field is inline_keyboard) has
-  // nothing to hide it among, so collapsing it would just add a click before the user can start building.
-  const collapsible = props.node.type.fields.length > 1;
   return props.node.type.fields.map((field) => {
     const childNode = fieldNode(field, props.schema, props.depth + 1);
-    return { field, childNode, collapsible, visited };
+    return { field, childNode, visited };
   });
 });
 
@@ -518,7 +513,7 @@ function setUnionValue(value: unknown) {
 
   <div v-else-if="node.kind === 'custom'" class="min-w-0 space-y-3.5">
     <div v-for="entry in customFieldEntries" :key="entry.field.name" class="min-w-0">
-      <div v-if="entry.collapsible" :class="boxClass">
+      <div :class="boxClass">
         <!-- flex-wrap (not a plain single-line flex row): the hint+chevron chunk on the right is
         shrink-0 and won't give up width, so on a narrow container a long field name used to get
         squeezed into whatever sliver was left over and wrap across many cramped lines. Letting the
@@ -575,31 +570,6 @@ function setUnionValue(value: unknown) {
           </div>
         </div>
       </div>
-      <template v-else>
-        <FieldMeta
-          size="sm"
-          :name="displayName(entry.field.name)"
-          :required="entry.field.required"
-          :type="entry.field.type"
-        />
-        <ExpandableText
-          v-if="entry.field.description"
-          tag="p"
-          :text="entry.field.description"
-          :lines="2"
-          :class="fieldDescriptionClass"
-        />
-        <TypeFieldEditor
-          class="mt-1.5"
-          :node="entry.childNode"
-          :schema="schema"
-          :depth="depth + 1"
-          :visited="entry.visited"
-          :field="entry.field"
-          :model-value="fieldValue(entry.field.name)"
-          @update:model-value="(value) => setField(entry.field.name, value)"
-        />
-      </template>
     </div>
   </div>
 
