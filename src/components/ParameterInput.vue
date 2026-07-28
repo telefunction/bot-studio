@@ -25,6 +25,17 @@ const showBuilder = computed(() => {
   return resolvableVariants(props.parameter.type, props.schema).length > 0;
 });
 const builderOpen = ref(false);
+// v-if="showBuilder && schema" alone would mount TypeEditorModal (and trigger its
+// defineAsyncComponent import) the instant a builder-eligible field appears on the page —
+// long before the user ever clicks the wand button, defeating the whole point of splitting
+// it into a separate chunk. Gating the mount on this too means the chunk fetch only starts
+// on the first actual click; it then stays mounted (rather than un-mounting on close) so
+// later opens are instant, matching how a lazy component is meant to be used.
+const builderRequested = ref(false);
+function openBuilder() {
+  builderRequested.value = true;
+  builderOpen.value = true;
+}
 const builderTriggerRef = useTemplateRef<HTMLButtonElement>('builderTriggerRef');
 
 watch(builderOpen, (isOpen, wasOpen) => {
@@ -143,14 +154,14 @@ function onFile(event: Event) {
             class="icon-button h-7 w-7"
             title="Open visual builder"
             aria-label="Open visual builder"
-            @click="builderOpen = true"
+            @click="openBuilder"
           >
             <Wand2 class="h-3.5 w-3.5" />
           </button>
         </template>
       </FieldControl>
       <TypeEditorModal
-        v-if="showBuilder && schema"
+        v-if="showBuilder && schema && builderRequested"
         v-model="textValue"
         v-model:open="builderOpen"
         :parameter="parameter"

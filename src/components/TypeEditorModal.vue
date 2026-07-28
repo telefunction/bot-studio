@@ -38,11 +38,18 @@ function primeForm() {
       : defaultForNode(rootNode.value, props.schema);
 }
 
-watch(open, (isOpen) => {
-  if (!isOpen) return;
-  primeForm();
-  nextTick(() => dialogRef.value?.focus());
-});
+// immediate: true because ParameterInput.vue now only mounts this component once the
+// builder is first requested — at which point `open` is already true on arrival, so a
+// plain (non-immediate) watch would never fire for that first open.
+watch(
+  open,
+  (isOpen) => {
+    if (!isOpen) return;
+    primeForm();
+    nextTick(() => dialogRef.value?.focus());
+  },
+  { immediate: true },
+);
 
 function save() {
   const result = serializeNode(rootNode.value, props.schema, formState.value) ?? {};
