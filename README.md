@@ -1,30 +1,15 @@
 # Bot Studio
 
-Bot Studio is a browser-based Telegram Bot API workspace for exploring methods, building request payloads, and sending test calls directly to Telegram. It runs entirely client-side — your bot token is only ever used to call `https://api.telegram.org` directly from your browser and is never stored or sent anywhere else.
+A browser-based workspace for the Telegram Bot API: search methods, build request payloads from an auto-generated form (or a visual builder for nested types like inline keyboards), and send test calls straight to Telegram. Everything runs client-side — your bot token is only ever used to call `https://api.telegram.org` directly from your browser and is never stored or sent anywhere else.
 
 ## Features
 
-- Search and browse generated Telegram Bot API methods.
-- Generate parameter forms from the local Bot API schema.
-- Edit either form fields or the request JSON and keep both in sync.
-- Preserve custom request JSON keys that are not part of the selected method form.
-- Send requests directly to Telegram from the browser.
-- View and copy request/response JSON.
-- Build static output into `docs/` for GitHub Pages.
-- Update the Telegram Bot API schema manually or on an hourly GitHub Action.
+- Search and browse the full Telegram Bot API method list.
+- Auto-generated parameter forms, plus a visual builder for nested/union types (keyboards, media, entities, ...).
+- Form fields and the raw request JSON stay in sync — edit either one.
+- Send requests to Telegram directly from the browser and inspect the response.
+- The schema stays current on its own: an hourly check for changes to Telegram's docs keeps the app up to date automatically.
 
-## Tech Stack
+---
 
-- Vue 3
-- TypeScript
-- Vite
-- Tailwind CSS
-- Lucide icons
-
-## Learn More
-
-See [DEVELOPMENT.md](./DEVELOPMENT.md) for the full script reference, project structure, and schema-update workflow.
-
-## License
-
-GPL-3.0-only. See [LICENSE](./LICENSE).
+For local setup and scripts, see [DEVELOPMENT.md](./DEVELOPMENT.md).
