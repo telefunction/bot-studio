@@ -1,6 +1,6 @@
-# Development
+# Contributing
 
-This document covers the available scripts and the Telegram Bot API schema workflow for anyone building or contributing to Bot Studio. For a quick overview of the app itself, see [README.md](./README.md).
+Glad you're interested in contributing to Bot Studio — this document covers the available scripts and the Telegram Bot API schema workflow for anyone building or contributing to it. For a quick overview of the app itself, see [README.md](./README.md).
 
 ## Getting Set Up
 

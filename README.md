@@ -9,7 +9,3 @@ A browser-based workspace for the Telegram Bot API: search methods, build reques
 - Form fields and the raw request JSON stay in sync — edit either one.
 - Send requests to Telegram directly from the browser and inspect the response.
 - The schema stays current on its own: an hourly check for changes to Telegram's docs keeps the app up to date automatically.
-
----
-
-For local setup and scripts, see [DEVELOPMENT.md](./DEVELOPMENT.md).
