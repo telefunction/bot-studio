@@ -2,12 +2,9 @@
 import { Info } from 'lucide-vue-next';
 
 // Shared field-header line ("Name [*required] [ⓘ]") used by both the top-level ParameterInput.vue
-// form and the nested TypeFieldEditor.vue builder, at two scales. The type used to render as its
-// own boxed pill (or, briefly, a muted inline suffix) sitting next to the name — either way a
-// second piece of always-on text competing with the name for attention. Tucking it behind a small
-// info glyph keeps the type a tap/hover away without it reading as its own UI element; the tooltip
-// itself reuses the exact hover/focus reveal pattern from App.vue's theme-switcher button, and
-// triggers on plain `focus` (not `focus-visible`) so a touch tap opens it too, not just keyboard nav.
+// form and the nested TypeFieldEditor.vue builder, at two scales. The type is tucked behind an info
+// glyph (reusing App.vue's theme-switcher hover/focus reveal pattern, on plain `focus` so touch taps
+// open it too) rather than shown inline, so it doesn't compete with the name for attention.
 withDefaults(
   defineProps<{
     name: string;

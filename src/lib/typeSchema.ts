@@ -190,8 +190,7 @@ export function isResolvableBranch(node: TypeNode): boolean {
  * plain "Integer or String" field like chat_id doesn't need the visual builder at the top level.
  * But once already inside the builder, e.g. editing a nested ReplyParameters.chat_id field, a union
  * of primitives must still render as a normal variant toggle + input, not fall through to a raw-JSON
- * dead end just because neither branch is a custom type (issue: "Chat Id" rendering as "Integer or
- * String" / raw JSON instead of a usable Integer/String toggle).
+ * dead end just because neither branch is a custom type.
  */
 export function isRenderableBranch(node: TypeNode): boolean {
   switch (node.kind) {
@@ -369,8 +368,8 @@ export function isEmptySerialized(value: unknown, required: boolean): boolean {
   if (Array.isArray(value) && value.length === 0 && !required) return true;
   // A dead-end/placeholder custom type (e.g. CallbackGame, which has zero fields) serializes to "{}" whether
   // or not the user touched it. Without this, that empty object would survive as a real key in the saved
-  // JSON — the exact "Callback Game: {}" leak reported in issue 2. Never applies to required fields: an
-  // empty object placed there deliberately (or left as the only possible value) must still come through.
+  // JSON. Never applies to required fields: an empty object placed there deliberately (or left as the
+  // only possible value) must still come through.
   if (
     !required &&
     value !== null &&

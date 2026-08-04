@@ -252,8 +252,8 @@ const customFieldEntries = computed<CustomFieldEntry[]>(() => {
 /**
  * Short "does this collapsed section actually have anything in it" hint. Reuses serializeNode +
  * isEmptySerialized — the exact rules Save uses to decide what gets omitted — so this hint can never
- * disagree with what actually ends up in the JSON (directly supporting issue 2: seeing at a glance what's
- * really set, without needing to open every section to check).
+ * disagree with what actually ends up in the JSON, letting you see at a glance what's really set
+ * without opening every section to check.
  */
 function subFieldHint(childNode: TypeNode, value: unknown, visited: readonly string[]): string {
   if (childNode.kind === 'array') {
