@@ -1,15 +1,13 @@
 # Contributing
 
-Glad you're interested in contributing to Bot Studio — this document covers the available scripts and the Telegram Bot API schema workflow for anyone building or contributing to it. For a quick overview of the app itself, see [README.md](./README.md).
+Glad you're interested — we'd love your help improving Bot Studio.
 
-## Getting Set Up
+## Setup Workflow
 
 ```bash
 npm install
 npm run dev
 ```
-
-## Scripts
 
 | Command                    | Description                                                            |
 | -------------------------- | ---------------------------------------------------------------------- |
@@ -28,6 +26,8 @@ npm run dev
 
 ## Schema Workflow
 
-`public/schema/bot-api.json` is the source of truth; Vite copies it into `docs/schema/bot-api.json` on build.
+`src/` holds the app: `components/` for Vue components, `composables/` for shared reactive logic, `lib/` for framework-agnostic helpers, and `types/` for shared TypeScript types. `public/schema/bot-api.json` is the canonical, auto-generated Telegram Bot API schema the app reads at runtime; Vite copies it into `docs/schema/bot-api.json` on build. The `scripts/` directory fetches and normalizes that schema, and an hourly GitHub Action keeps it current — a schema-changing commit alone is enough to trigger the deploy workflow on push to `main`, no manual step needed.
 
-An hourly GitHub Action checks Telegram's docs and commits `public/schema/bot-api.json` when it changes. That commit alone is enough to trigger the deploy workflow on push to `main`, which rebuilds and redeploys the site — no manual step needed.
+## Contribution Workflow
+
+Branch off `main`, commit using [Conventional Commits](https://www.conventionalcommits.org/), and open a pull request.
