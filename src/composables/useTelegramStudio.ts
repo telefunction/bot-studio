@@ -309,6 +309,7 @@ export function useTelegramStudio() {
       const res = await fetch(`${import.meta.env.BASE_URL}schema/bot-api.json`, {
         cache: 'no-store',
       });
+      if (!res.ok) throw new Error(`Failed to fetch schema (HTTP ${res.status}).`);
       const nextSchema = (await res.json()) as TelegramSchema;
       if (!Array.isArray(nextSchema.methods) || nextSchema.methods.length === 0)
         throw new Error('No Telegram methods found.');
@@ -317,6 +318,12 @@ export function useTelegramStudio() {
       // `/methodName`, land on that method already selected instead of
       // resetting to "no selection".
       syncSelectionFromLocation();
+    } catch (error) {
+      notify(
+        'error',
+        'Failed to load schema',
+        error instanceof Error ? error.message : 'Could not load the Telegram Bot API schema.',
+      );
     } finally {
       loadingSchema.value = false;
     }
@@ -393,8 +400,16 @@ export function useTelegramStudio() {
   }
 
   async function copy(text: string, label: string) {
-    await navigator.clipboard.writeText(text);
-    notify('success', 'Copied', `${label} copied to clipboard.`);
+    try {
+      await navigator.clipboard.writeText(text);
+      notify('success', 'Copied', `${label} copied to clipboard.`);
+    } catch (error) {
+      notify(
+        'error',
+        'Copy failed',
+        error instanceof Error ? error.message : `Could not copy ${label.toLowerCase()}.`,
+      );
+    }
   }
 
   return {
