@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onErrorCaptured, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
 import { Bot, Moon, Sun, Monitor, Github, Send, TriangleAlert } from 'lucide-vue-next';
+import { version as appVersion } from '../package.json';
 import ExpandableText from '@/components/ExpandableText.vue';
 import MethodSidebar from '@/components/MethodSidebar.vue';
 import TokenBox from '@/components/TokenBox.vue';
@@ -130,12 +131,15 @@ onUnmounted(() => {
               <Bot class="h-6 w-6" />
             </div>
           </div>
-          <div class="min-w-0">
+          <div class="flex min-w-0 items-baseline gap-1.5">
             <h1
-              class="truncate bg-gradient-to-r from-ink-950 via-ink-950 to-signal-blueHover bg-clip-text text-xl font-black tracking-normal text-transparent dark:from-paper-50 dark:via-paper-50 dark:to-signal-blueBright"
+              class="min-w-0 truncate bg-gradient-to-r from-ink-950 via-ink-950 to-signal-blueHover bg-clip-text text-xl font-black tracking-normal text-transparent dark:from-paper-50 dark:via-paper-50 dark:to-signal-blueBright"
             >
               Bot Studio
             </h1>
+            <span class="shrink-0 font-mono text-xs font-bold text-ink-700 dark:text-paper-300">
+              v{{ appVersion }}
+            </span>
           </div>
         </a>
 
