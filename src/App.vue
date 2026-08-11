@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { computed, onErrorCaptured, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
 import { Bot, Moon, Sun, Monitor, Github, Send, TriangleAlert } from 'lucide-vue-next';
 import ExpandableText from '@/components/ExpandableText.vue';
 import MethodSidebar from '@/components/MethodSidebar.vue';
@@ -71,6 +71,16 @@ function handleSystemThemeChange(event: MediaQueryListEvent) {
 }
 
 const privacyNoticeOpen = ref(false);
+
+const fatalError = ref(false);
+onErrorCaptured((error) => {
+  console.error(error);
+  fatalError.value = true;
+  return false;
+});
+function reloadPage() {
+  window.location.reload();
+}
 
 watch(theme, () => {
   localStorage.setItem('bot-studio.theme', theme.value);
@@ -169,6 +179,25 @@ onUnmounted(() => {
     </header>
 
     <main
+      v-if="fatalError"
+      class="mx-auto flex w-full max-w-[1540px] flex-col items-center gap-3 p-10 text-center"
+    >
+      <TriangleAlert class="h-8 w-8 text-signal-red" />
+      <h2 class="text-2xl font-black leading-none tracking-normal">Something went wrong</h2>
+      <p class="max-w-md text-sm leading-7 text-ink-700 dark:text-paper-300">
+        Bot Studio hit an unexpected error and can't continue safely. Reloading should fix it.
+      </p>
+      <button
+        type="button"
+        class="mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-signal-blue bg-gradient-to-r from-signal-blue to-signal-blueHover px-4 font-black text-paper-50 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-glow active:translate-y-0 active:scale-[0.98] dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark"
+        @click="reloadPage"
+      >
+        Reload
+      </button>
+    </main>
+
+    <main
+      v-else
       class="mx-auto grid w-full max-w-[1540px] grid-cols-1 gap-4 p-3 sm:p-4 xl:grid-cols-[19rem_minmax(0,1.7fr)_23rem]"
     >
       <MethodSidebar
