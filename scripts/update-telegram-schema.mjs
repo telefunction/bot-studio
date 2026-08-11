@@ -32,7 +32,7 @@ function isTypeName(value) {
 // field tables have no Required column at all — just "Field | Type | Description" (3 columns).
 // Telegram instead marks an optional *type* field by prefixing its description with "Optional.".
 // Getting this wrong silently discards every type field's real description into the (nonexistent)
-// Required column, which is why every type's fields used to render with blank descriptions.
+// Required column.
 function parseRows(block, { isType = false } = {}) {
   const tableMatch = block.match(/<table[\s\S]*?<\/table>/i);
   if (!tableMatch) return [];
