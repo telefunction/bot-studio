@@ -1,6 +1,6 @@
 {
   "source": "https://core.telegram.org/bots/api",
-  "fetchedAt": "2026-08-24T16:21:58.116Z",
+  "fetchedAt": "2026-08-24T17:20:41.511Z",
   "generatedBy": "scripts/update-telegram-schema.mjs",
   "methodCount": 185,
   "typeCount": 400,
@@ -6367,13 +6367,25 @@
           "name": "draft_id",
           "type": "Integer",
           "required": true,
-          "description": "Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated."
+          "description": "Unique identifier of the message draft; must be non-zero. Changes to drafts with the same identifier are animated. Otherwise, the draft is replaced without animation."
         },
         {
           "name": "rich_message",
           "type": "InputRichMessage",
           "required": true,
           "description": "The partial message to be streamed. Direct upload of new files and explicit upload of files by a URL isn't supported."
+        },
+        {
+          "name": "can_stop",
+          "type": "Boolean",
+          "required": false,
+          "description": "Pass True to show the user a button to stop further drafts. The bot will receive an Update “stopped_message_generation” if the user presses the button."
+        },
+        {
+          "name": "keep_on_stop",
+          "type": "Boolean",
+          "required": false,
+          "description": "Pass True to keep the draft in the chat when the button is pressed. The draft will still disappear after a short time or if the bot sends a message. To fully preserve the partial draft, the bot should send it as a new message."
         }
       ],
       "officialUrl": "https://core.telegram.org/bots/api#sendrichmessagedraft"
