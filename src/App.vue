@@ -111,7 +111,7 @@ onUnmounted(() => {
     <PrivacyNoticeModal v-model:open="privacyNoticeOpen" />
 
     <header
-      class="border-ink-950/[0.08] bg-paper-50/[0.84] dark:border-paper-50/[0.08] sticky top-0 z-30 border-b px-4 py-3 backdrop-blur-[25px] sm:px-6 dark:bg-[var(--page-bg)] dark:backdrop-blur-none"
+      class="border-ink-950/8 bg-paper-50/84 dark:border-paper-50/8 sticky top-0 z-30 border-b px-4 py-3 backdrop-blur-[25px] sm:px-6 dark:bg-(--page-bg) dark:backdrop-blur-none"
     >
       <div class="mx-auto flex w-full max-w-[1540px] flex-row items-center justify-between gap-3">
         <a
@@ -126,14 +126,14 @@ onUnmounted(() => {
               aria-hidden="true"
             />
             <div
-              class="from-signal-blue to-signal-blueHover text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-blueBright dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-rotate-3"
+              class="from-signal-blue to-signal-blueHover text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-blueBright dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-xl bg-linear-to-br transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-rotate-3"
             >
               <Bot class="h-6 w-6" />
             </div>
           </div>
           <div class="flex min-w-0 items-baseline gap-1.5">
             <h1
-              class="from-ink-950 via-ink-950 to-signal-blueHover dark:from-paper-50 dark:via-paper-50 dark:to-signal-blueBright min-w-0 truncate bg-gradient-to-r bg-clip-text text-xl font-black tracking-normal text-transparent"
+              class="from-ink-950 via-ink-950 to-signal-blueHover dark:from-paper-50 dark:via-paper-50 dark:to-signal-blueBright min-w-0 truncate bg-linear-to-r bg-clip-text text-xl font-black tracking-normal text-transparent"
             >
               Bot Studio
             </h1>
@@ -154,7 +154,7 @@ onUnmounted(() => {
             <component :is="themeIcon" class="h-4 w-4" />
             <span
               role="tooltip"
-              class="border-ink-950/[0.08] bg-paper-50 text-ink-950 shadow-soft dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft pointer-events-none absolute top-full left-1/2 z-40 mt-2 -translate-x-1/2 translate-y-1 rounded-md border px-2 py-1 text-xs font-bold whitespace-nowrap opacity-0 transition duration-150 group-hover/theme:translate-y-0 group-hover/theme:opacity-100 group-focus-visible/theme:translate-y-0 group-focus-visible/theme:opacity-100"
+              class="border-ink-950/8 bg-paper-50 text-ink-950 shadow-soft dark:border-paper-50/8 dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft pointer-events-none absolute top-full left-1/2 z-40 mt-2 -translate-x-1/2 translate-y-1 rounded-md border px-2 py-1 text-xs font-bold whitespace-nowrap opacity-0 transition duration-150 group-hover/theme:translate-y-0 group-hover/theme:opacity-100 group-focus-visible/theme:translate-y-0 group-focus-visible/theme:opacity-100"
             >
               {{ themeLabel }}
             </span>
@@ -193,7 +193,7 @@ onUnmounted(() => {
       </p>
       <button
         type="button"
-        class="border-signal-blue from-signal-blue to-signal-blueHover text-paper-50 hover:shadow-glow dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border bg-gradient-to-r px-4 font-black transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
+        class="border-signal-blue from-signal-blue to-signal-blueHover text-paper-50 hover:shadow-glow dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border bg-linear-to-r px-4 font-black transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
         @click="reloadPage"
       >
         Reload
@@ -222,11 +222,11 @@ onUnmounted(() => {
           @select="selectMethod"
         />
         <template v-else>
-          <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-b pb-5">
+          <div class="border-ink-950/8 dark:border-paper-50/8 border-b pb-5">
             <div class="flex min-w-0 items-start justify-between gap-3">
               <div class="min-w-0">
                 <h2
-                  class="text-3xl leading-none font-black tracking-normal break-words sm:text-5xl"
+                  class="text-3xl leading-none font-black tracking-normal wrap-break-word sm:text-5xl"
                 >
                   {{ selected?.name || 'Select a method' }}
                 </h2>
@@ -268,7 +268,7 @@ onUnmounted(() => {
 
             <div class="mt-5 flex flex-col gap-2 sm:flex-row">
               <button
-                class="border-signal-blue from-signal-blue to-signal-blueHover text-paper-50 hover:shadow-glow dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border bg-gradient-to-r px-4 font-black transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] disabled:hover:translate-y-0 disabled:hover:shadow-none"
+                class="border-signal-blue from-signal-blue to-signal-blueHover text-paper-50 hover:shadow-glow dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border bg-linear-to-r px-4 font-black transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] disabled:hover:translate-y-0 disabled:hover:shadow-none"
                 type="submit"
                 :disabled="!selected || response.status === 'loading'"
               >

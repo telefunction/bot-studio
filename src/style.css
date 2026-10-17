@@ -184,19 +184,19 @@
 
 @layer components {
   .app-shell {
-    @apply bg-paper-50 text-ink-950 dark:text-paper-50 min-h-screen transition-colors duration-200 dark:bg-[var(--page-bg)];
+    @apply bg-paper-50 text-ink-950 dark:text-paper-50 min-h-screen transition-colors duration-200 dark:bg-(--page-bg);
   }
 
   .panel {
-    @apply border-ink-950/[0.08] bg-paper-50/95 shadow-soft dark:border-paper-50/[0.08] dark:shadow-darkSoft min-w-0 border backdrop-blur-xl dark:bg-[var(--panel-bg)];
+    @apply border-ink-950/8 bg-paper-50/95 shadow-soft dark:border-paper-50/8 dark:shadow-darkSoft min-w-0 border backdrop-blur-xl dark:bg-(--panel-bg);
   }
 
   .control {
-    @apply border-ink-950/[0.08] bg-paper-100 text-ink-950 hover:border-ink-950/20 focus:border-signal-blue focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:text-paper-50 dark:hover:border-paper-50/20 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25 w-full min-w-0 rounded-lg border px-3 transition duration-200 ease-out outline-none focus:ring-4;
+    @apply border-ink-950/8 bg-paper-100 text-ink-950 hover:border-ink-950/20 focus:border-signal-blue focus:ring-signal-blue/15 dark:border-paper-50/8 dark:bg-navy-900 dark:text-paper-50 dark:hover:border-paper-50/20 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25 w-full min-w-0 rounded-lg border px-3 transition duration-200 ease-out outline-none focus:ring-4;
   }
 
   .icon-button {
-    @apply border-ink-950/[0.08] bg-paper-100 text-ink-700 hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-300 dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25 inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border transition duration-200 ease-out hover:-translate-y-px focus:ring-4 focus:outline-none active:translate-y-0 active:scale-90;
+    @apply border-ink-950/8 bg-paper-100 text-ink-700 hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:ring-signal-blue/15 dark:border-paper-50/8 dark:bg-navy-800 dark:text-paper-300 dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25 inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border transition duration-200 ease-out hover:-translate-y-px focus:ring-4 focus:outline-none active:translate-y-0 active:scale-90;
   }
 
   /* A button "attached" to the end of a FieldControl (upload, remove, ...): flush against the box

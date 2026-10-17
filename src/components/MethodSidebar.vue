@@ -68,7 +68,7 @@ onUnmounted(cancelPendingGrowth);
 <template>
   <aside class="panel self-start overflow-hidden rounded-2xl p-4">
     <div
-      class="border-ink-950/[0.08] bg-paper-100 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 flex h-11 items-center gap-2 rounded-lg border px-3 transition focus-within:ring-4"
+      class="border-ink-950/8 bg-paper-100 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/8 dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 flex h-11 items-center gap-2 rounded-lg border px-3 transition focus-within:ring-4"
     >
       <Search class="text-ink-700 dark:text-paper-300 h-4 w-4 shrink-0" />
       <input
@@ -80,7 +80,7 @@ onUnmounted(cancelPendingGrowth);
     </div>
 
     <div
-      class="border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-900 mt-3 flex h-11 items-center gap-2 rounded-lg border px-3"
+      class="border-ink-950/8 bg-paper-100 dark:border-paper-50/8 dark:bg-navy-900 mt-3 flex h-11 items-center gap-2 rounded-lg border px-3"
     >
       <SlidersHorizontal class="text-ink-700 dark:text-paper-300 h-4 w-4 shrink-0" />
       <select
@@ -103,8 +103,8 @@ onUnmounted(cancelPendingGrowth);
         class="group relative min-w-0 rounded-lg border p-3 text-left transition duration-200 ease-out hover:-translate-y-0.5"
         :class="
           selectedName === method.name
-            ? 'border-signal-blue/40 bg-signal-blue/[0.07] shadow-soft before:from-signal-blue before:to-signal-blueBright dark:border-signal-blueDark/40 dark:bg-signal-blueDark/10 dark:shadow-darkSoft dark:before:from-signal-blueDark dark:before:to-signal-blueBright before:absolute before:inset-y-2.5 before:left-1 before:w-[3px] before:rounded-full before:bg-gradient-to-b'
-            : 'border-ink-950/[0.08] bg-paper-50 hover:border-signal-blue/60 hover:bg-paper-100 hover:shadow-soft dark:border-paper-50/[0.08] dark:bg-navy-800 dark:hover:border-signal-blueDark/60 dark:hover:bg-navy-700 dark:hover:shadow-darkSoft'
+            ? 'border-signal-blue/40 bg-signal-blue/7 shadow-soft before:from-signal-blue before:to-signal-blueBright dark:border-signal-blueDark/40 dark:bg-signal-blueDark/10 dark:shadow-darkSoft dark:before:from-signal-blueDark dark:before:to-signal-blueBright before:absolute before:inset-y-2.5 before:left-1 before:w-[3px] before:rounded-full before:bg-linear-to-b'
+            : 'border-ink-950/8 bg-paper-50 hover:border-signal-blue/60 hover:bg-paper-100 hover:shadow-soft dark:border-paper-50/8 dark:bg-navy-800 dark:hover:border-signal-blueDark/60 dark:hover:bg-navy-700 dark:hover:shadow-darkSoft'
         "
         :aria-current="selectedName === method.name ? 'page' : undefined"
         @click="onMethodClick($event, method)"

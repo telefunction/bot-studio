@@ -89,10 +89,10 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
             convention every field already uses in the form and inside this builder itself, instead
             of a standalone always-visible mono "field : type" line. -->
             <div
-              class="border-ink-950/[0.08] dark:border-paper-50/[0.08] relative shrink-0 overflow-hidden border-b px-6 py-4"
+              class="border-ink-950/8 dark:border-paper-50/8 relative shrink-0 overflow-hidden border-b px-6 py-4"
             >
               <div
-                class="from-signal-blue/[0.07] to-signal-cyan/[0.06] dark:from-signal-blueDark/[0.12] dark:to-signal-cyan/[0.06] pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent"
+                class="from-signal-blue/7 to-signal-cyan/6 dark:from-signal-blueDark/12 dark:to-signal-cyan/6 pointer-events-none absolute inset-0 bg-linear-to-br via-transparent"
               />
               <div class="relative flex items-center gap-3">
                 <div class="relative shrink-0">
@@ -101,7 +101,7 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
                     aria-hidden="true"
                   />
                   <div
-                    class="from-signal-blue to-signal-cyan text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-cyan dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br"
+                    class="from-signal-blue to-signal-cyan text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-cyan dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-2xl bg-linear-to-br"
                   >
                     <Wand2 class="h-5 w-5" />
                   </div>
@@ -152,7 +152,7 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
             </div>
 
             <div
-              class="border-ink-950/[0.08] bg-paper-100/60 dark:border-paper-50/[0.08] dark:bg-navy-900/40 flex shrink-0 items-center justify-between gap-3 border-t px-6 py-4"
+              class="border-ink-950/8 bg-paper-100/60 dark:border-paper-50/8 dark:bg-navy-900/40 flex shrink-0 items-center justify-between gap-3 border-t px-6 py-4"
             >
               <p class="text-ink-700/70 dark:text-paper-300/70 hidden text-[0.7rem] sm:block">
                 <span class="text-signal-red">*</span> Required fields
@@ -160,7 +160,7 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
               <div class="ml-auto flex items-center gap-2">
                 <button
                   type="button"
-                  class="border-ink-950/[0.08] text-ink-700 hover:bg-paper-100 dark:border-paper-50/[0.08] dark:text-paper-300 dark:hover:bg-navy-800 rounded-lg border px-4 py-2 text-sm font-bold transition"
+                  class="border-ink-950/8 text-ink-700 hover:bg-paper-100 dark:border-paper-50/8 dark:text-paper-300 dark:hover:bg-navy-800 rounded-lg border px-4 py-2 text-sm font-bold transition"
                   @click="cancel"
                 >
                   Cancel

@@ -136,11 +136,11 @@ watch(
       <span
         v-if="!displayExpanded"
         aria-hidden="true"
-        class="from-paper-50 dark:from-navy-700 pointer-events-none absolute right-0 bottom-0 h-5 w-10 rounded-md bg-gradient-to-l to-transparent"
+        class="from-paper-50 dark:from-navy-700 pointer-events-none absolute right-0 bottom-0 h-5 w-10 rounded-md bg-linear-to-l to-transparent"
       ></span>
       <button
         type="button"
-        class="border-ink-950/[0.08] bg-paper-100 text-signal-blue shadow-soft hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:ring-signal-blue/15 group-hover:border-signal-blueHover group-hover:bg-signal-blue/10 group-hover:text-signal-blueHover dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-signal-blueDark dark:shadow-darkSoft dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25 dark:group-hover:border-signal-blueBright dark:group-hover:bg-signal-blueDark/15 dark:group-hover:text-signal-blueBright absolute right-0 bottom-0 inline-flex h-5 w-5 items-center justify-center rounded-md border transition focus:ring-4 focus:outline-none"
+        class="border-ink-950/8 bg-paper-100 text-signal-blue shadow-soft hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:ring-signal-blue/15 group-hover:border-signal-blueHover group-hover:bg-signal-blue/10 group-hover:text-signal-blueHover dark:border-paper-50/8 dark:bg-navy-800 dark:text-signal-blueDark dark:shadow-darkSoft dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25 dark:group-hover:border-signal-blueBright dark:group-hover:bg-signal-blueDark/15 dark:group-hover:text-signal-blueBright absolute right-0 bottom-0 inline-flex h-5 w-5 items-center justify-center rounded-md border transition focus:ring-4 focus:outline-none"
         :aria-expanded="expanded"
         :aria-controls="textId"
         :aria-label="expanded ? 'Show less' : 'Show more'"

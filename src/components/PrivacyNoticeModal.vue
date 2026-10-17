@@ -59,13 +59,13 @@ const { onKeydown } = useFocusTrap(dialogRef, dismiss);
 
             <div class="relative shrink-0 overflow-hidden px-6 pt-8 pb-5 text-center">
               <div
-                class="from-signal-lime/10 dark:from-signal-lime/[0.08] pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b to-transparent"
+                class="from-signal-lime/10 dark:from-signal-lime/8 pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b to-transparent"
               />
               <div class="relative mx-auto flex h-16 w-16 items-center justify-center">
                 <span class="border-signal-lime/20 absolute inset-0 rounded-full border-2" />
                 <span class="border-signal-lime/35 absolute inset-2 rounded-full border" />
                 <div
-                  class="from-signal-lime to-signal-cyan text-ink-950 shadow-soft dark:shadow-darkSoft relative grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br"
+                  class="from-signal-lime to-signal-cyan text-ink-950 shadow-soft dark:shadow-darkSoft relative grid h-10 w-10 place-items-center rounded-full bg-linear-to-br"
                 >
                   <ShieldCheck class="h-5 w-5" />
                 </div>
@@ -74,7 +74,7 @@ const { onKeydown } = useFocusTrap(dialogRef, dismiss);
             </div>
 
             <div
-              class="border-ink-950/[0.08] dark:border-paper-50/[0.08] min-h-0 flex-1 space-y-4 overflow-y-auto border-t px-6 py-5 text-sm leading-6"
+              class="border-ink-950/8 dark:border-paper-50/8 min-h-0 flex-1 space-y-4 overflow-y-auto border-t px-6 py-5 text-sm leading-6"
             >
               <p class="text-ink-950 dark:text-paper-50">
                 Bot Studio has <span class="font-black">no backend</span>. There is no server
@@ -117,7 +117,7 @@ const { onKeydown } = useFocusTrap(dialogRef, dismiss);
             </div>
 
             <div
-              class="border-ink-950/[0.08] bg-paper-100/60 dark:border-paper-50/[0.08] dark:bg-navy-900/40 flex shrink-0 items-center justify-end gap-3 border-t px-6 py-4"
+              class="border-ink-950/8 bg-paper-100/60 dark:border-paper-50/8 dark:bg-navy-900/40 flex shrink-0 items-center justify-end gap-3 border-t px-6 py-4"
             >
               <button
                 type="button"

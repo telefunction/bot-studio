@@ -69,7 +69,7 @@ function startResize(event: MouseEvent) {
 
 <template>
   <div
-    class="border-ink-950/[0.08] bg-paper-100 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 relative flex min-w-0 items-stretch rounded-lg border transition focus-within:ring-4"
+    class="border-ink-950/8 bg-paper-100 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/8 dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 relative flex min-w-0 items-stretch rounded-lg border transition focus-within:ring-4"
     :class="as === 'input' ? wrapperSizeClass : ['p-3', $slots.suffix ? 'pe-9' : '']"
   >
     <!-- Padding lives on this wrapper (not the textarea itself) for the textarea variant, and the
@@ -108,13 +108,13 @@ function startResize(event: MouseEvent) {
     its top-right corner. -->
     <span
       v-if="$slots.suffix && as === 'textarea'"
-      class="absolute end-1.5 top-1.5 flex items-center gap-1"
+      class="absolute inset-e-1.5 top-1.5 flex items-center gap-1"
     >
       <slot name="suffix" />
     </span>
     <span
       v-else-if="$slots.suffix"
-      class="divide-ink-950/[0.08] dark:divide-paper-50/[0.08] flex shrink-0 divide-x self-stretch overflow-hidden rounded-r-lg"
+      class="divide-ink-950/8 dark:divide-paper-50/8 flex shrink-0 divide-x self-stretch overflow-hidden rounded-r-lg"
     >
       <slot name="suffix" />
     </span>
@@ -124,7 +124,7 @@ function startResize(event: MouseEvent) {
     glyph (h-2.5 w-2.5) — a small drag target in a box corner is fiddly to grab precisely otherwise. -->
     <div
       v-if="as === 'textarea'"
-      class="text-ink-950/25 hover:text-ink-950/50 dark:text-paper-50/25 dark:hover:text-paper-50/50 absolute end-0 bottom-0 flex h-5 w-5 cursor-ns-resize items-end justify-end p-1 transition-colors"
+      class="text-ink-950/25 hover:text-ink-950/50 dark:text-paper-50/25 dark:hover:text-paper-50/50 absolute inset-e-0 bottom-0 flex h-5 w-5 cursor-ns-resize items-end justify-end p-1 transition-colors"
       title="Drag to resize"
       @mousedown="startResize"
     >

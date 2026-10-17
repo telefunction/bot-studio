@@ -17,7 +17,7 @@ function onSuggestionClick(event: MouseEvent, method: TelegramMethod) {
 
 <template>
   <div>
-    <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-b pb-5">
+    <div class="border-ink-950/8 dark:border-paper-50/8 border-b pb-5">
       <h2 class="mt-1 text-3xl leading-none font-black tracking-normal sm:text-5xl">
         Method not found
       </h2>
@@ -39,7 +39,7 @@ function onSuggestionClick(event: MouseEvent, method: TelegramMethod) {
           v-for="method in suggestions"
           :key="method.name"
           :href="method.name"
-          class="border-ink-950/[0.08] bg-paper-50 hover:border-signal-blue hover:bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:hover:border-signal-blueDark dark:hover:bg-navy-700 rounded-lg border px-3 py-1.5 text-sm font-bold transition hover:-translate-y-0.5"
+          class="border-ink-950/8 bg-paper-50 hover:border-signal-blue hover:bg-paper-100 dark:border-paper-50/8 dark:bg-navy-800 dark:hover:border-signal-blueDark dark:hover:bg-navy-700 rounded-lg border px-3 py-1.5 text-sm font-bold transition hover:-translate-y-0.5"
           @click="onSuggestionClick($event, method)"
         >
           {{ method.name }}

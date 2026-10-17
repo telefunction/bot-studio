@@ -80,7 +80,7 @@ function onFile(event: Event) {
 
 <template>
   <div
-    class="border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800 min-w-0 rounded-xl border p-4"
+    class="border-ink-950/8 bg-paper-50 dark:border-paper-50/8 dark:bg-navy-800 min-w-0 rounded-xl border p-4"
   >
     <FieldMeta
       :name="displayName(parameter.name)"

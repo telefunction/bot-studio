@@ -10,7 +10,7 @@ const visible = ref(false);
 
 <template>
   <section
-    class="border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-800 mt-5 rounded-xl border p-4"
+    class="border-ink-950/8 bg-paper-100 dark:border-paper-50/8 dark:bg-navy-800 mt-5 rounded-xl border p-4"
   >
     <div class="flex items-center justify-between gap-3">
       <label class="flex items-center gap-2 font-black" for="tokenInput">
@@ -23,10 +23,10 @@ const visible = ref(false);
     </div>
 
     <div
-      class="border-ink-950/[0.08] bg-paper-50 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 mt-3 flex min-w-0 flex-nowrap overflow-hidden rounded-lg border focus-within:ring-4"
+      class="border-ink-950/8 bg-paper-50 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/8 dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 mt-3 flex min-w-0 flex-nowrap overflow-hidden rounded-lg border focus-within:ring-4"
     >
       <span
-        class="border-ink-950/[0.08] bg-paper-200 text-ink-700 dark:border-paper-50/[0.08] dark:bg-navy-700 dark:text-paper-300 hidden h-11 shrink-0 items-center border-r px-3 font-mono text-sm font-black sm:flex"
+        class="border-ink-950/8 bg-paper-200 text-ink-700 dark:border-paper-50/8 dark:bg-navy-700 dark:text-paper-300 hidden h-11 shrink-0 items-center border-r px-3 font-mono text-sm font-black sm:flex"
       >
         /bot
       </span>
@@ -51,7 +51,7 @@ const visible = ref(false);
       </button>
 
       <span
-        class="border-ink-950/[0.08] bg-paper-200 text-ink-700 dark:border-paper-50/[0.08] dark:bg-navy-700 dark:text-paper-300 hidden h-11 max-w-[14rem] shrink-0 items-center truncate border-l px-3 font-mono text-sm font-black sm:flex"
+        class="border-ink-950/8 bg-paper-200 text-ink-700 dark:border-paper-50/8 dark:bg-navy-700 dark:text-paper-300 hidden h-11 max-w-[14rem] shrink-0 items-center truncate border-l px-3 font-mono text-sm font-black sm:flex"
       >
         /{{ methodName || 'METHOD' }}
       </span>

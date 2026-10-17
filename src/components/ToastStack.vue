@@ -41,7 +41,7 @@ function toneIcon(tone: Notice['tone']) {
             <component :is="toneIcon(notice.tone)" class="mt-0.5 h-5 w-5 shrink-0" />
             <div class="min-w-0">
               <strong class="block text-sm font-black">{{ notice.title }}</strong>
-              <p class="mt-1 text-xs leading-5 break-words opacity-80">{{ notice.message }}</p>
+              <p class="mt-1 text-xs leading-5 wrap-break-word opacity-80">{{ notice.message }}</p>
             </div>
           </div>
         </article>

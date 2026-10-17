@@ -43,7 +43,7 @@ const fieldDescriptionClass =
 // never boxed itself — that would just draw a second, purposeless border around whatever box its
 // caller (an item disclosure, a field disclosure, or the modal's own panel) already drew.
 const boxClass =
-  'rounded-lg border border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800';
+  'rounded-lg border border-ink-950/8 bg-paper-50 dark:border-paper-50/8 dark:bg-navy-800';
 
 // The clickable header row of every disclosure (a custom field folded behind a toggle, a 2D-array
 // item, a plain-array item) — one shared class so all three read as the same kind of control
@@ -548,7 +548,7 @@ function setUnionValue(value: unknown) {
           :style="{ gridTemplateRows: isExpanded(entry.field.name) ? '1fr' : '0fr' }"
         >
           <div class="overflow-hidden">
-            <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-t p-3.5">
+            <div class="border-ink-950/8 dark:border-paper-50/8 border-t p-3.5">
               <ExpandableText
                 v-if="entry.field.description"
                 tag="p"
@@ -577,7 +577,7 @@ function setUnionValue(value: unknown) {
     <div
       v-for="(row, rowIndex) in rows2D"
       :key="rowIndex"
-      class="border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-900 rounded-lg border p-3"
+      class="border-ink-950/8 bg-paper-100 dark:border-paper-50/8 dark:bg-navy-900 rounded-lg border p-3"
       :aria-label="`Row ${rowIndex + 1}`"
     >
       <div class="mb-2.5 flex items-center justify-between gap-2">
@@ -648,7 +648,7 @@ function setUnionValue(value: unknown) {
             :style="{ gridTemplateRows: isExpanded(`${rowIndex}:${itemIndex}`) ? '1fr' : '0fr' }"
           >
             <div class="overflow-hidden">
-              <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-t p-3.5">
+              <div class="border-ink-950/8 dark:border-paper-50/8 border-t p-3.5">
                 <TypeFieldEditor
                   :node="node.of.of"
                   :schema="schema"
@@ -758,7 +758,7 @@ function setUnionValue(value: unknown) {
         :style="{ gridTemplateRows: isExpanded(`i:${index}`) ? '1fr' : '0fr' }"
       >
         <div class="overflow-hidden">
-          <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-t p-3.5">
+          <div class="border-ink-950/8 dark:border-paper-50/8 border-t p-3.5">
             <TypeFieldEditor
               :node="node.of"
               :schema="schema"

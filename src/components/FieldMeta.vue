@@ -25,7 +25,7 @@ withDefaults(
     class="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5"
     :class="size === 'lg' ? 'font-black' : 'text-ink-700 dark:text-paper-300 text-xs font-bold'"
   >
-    <span class="min-w-0 break-words">{{ name }}</span>
+    <span class="min-w-0 wrap-break-word">{{ name }}</span>
     <span v-if="required" class="text-signal-red">*</span>
     <span v-if="type" class="group/type relative inline-flex shrink-0">
       <button
@@ -38,7 +38,7 @@ withDefaults(
       </button>
       <span
         role="tooltip"
-        class="border-ink-950/[0.08] bg-paper-50 text-ink-950 shadow-soft dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 translate-y-1 rounded-md border px-2 py-1 font-mono text-[0.68rem] font-bold whitespace-nowrap opacity-0 transition duration-150 group-focus-within/type:translate-y-0 group-focus-within/type:opacity-100 group-hover/type:translate-y-0 group-hover/type:opacity-100"
+        class="border-ink-950/8 bg-paper-50 text-ink-950 shadow-soft dark:border-paper-50/8 dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 translate-y-1 rounded-md border px-2 py-1 font-mono text-[0.68rem] font-bold whitespace-nowrap opacity-0 transition duration-150 group-focus-within/type:translate-y-0 group-focus-within/type:opacity-100 group-hover/type:translate-y-0 group-hover/type:opacity-100"
       >
         {{ type }}
       </span>
