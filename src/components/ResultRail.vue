@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CheckCircle2, Clipboard, Loader2, Maximize2, ServerCrash } from 'lucide-vue-next';
+import { CheckCircle2, Clipboard, Loader2, Maximize2, ServerCrash } from '@lucide/vue';
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue';
 import type { ResponseState } from '@/types/schema';
 import { jsonForDisplay } from '@/lib/telegram';
@@ -111,7 +111,7 @@ watch(responseFullscreen, (isOpen, wasOpen) => {
       </div>
       <p
         v-if="requestError"
-        class="mt-2 rounded-md border border-signal-red/30 bg-signal-red/10 p-2 text-xs font-bold text-signal-red"
+        class="border-signal-red/30 bg-signal-red/10 text-signal-red mt-2 rounded-md border p-2 text-xs font-bold"
       >
         {{ requestError }}
       </p>
@@ -182,7 +182,7 @@ watch(responseFullscreen, (isOpen, wasOpen) => {
       </div>
       <p
         v-if="requestError"
-        class="mt-2 shrink-0 rounded-md border border-signal-red/30 bg-signal-red/10 p-2 text-xs font-bold text-signal-red"
+        class="border-signal-red/30 bg-signal-red/10 text-signal-red mt-2 shrink-0 rounded-md border p-2 text-xs font-bold"
       >
         {{ requestError }}
       </p>

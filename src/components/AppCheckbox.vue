@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Check } from 'lucide-vue-next';
+import { Check } from '@lucide/vue';
 
 // Native checkboxes only pick up the app's brand color via `accent-color`, which themes the
 // checked fill but leaves the *unchecked* box and border drawn by the OS/browser's own (light)
@@ -19,10 +19,10 @@ const model = defineModel<boolean>({ required: true });
     <input
       v-model="model"
       type="checkbox"
-      class="peer absolute inset-0 h-full w-full cursor-pointer appearance-none rounded border-2 border-ink-950/20 bg-transparent transition checked:border-signal-blue checked:bg-signal-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal-blue/50 dark:border-paper-50/20 dark:checked:border-signal-blueDark dark:checked:bg-signal-blueDark dark:focus-visible:outline-signal-blueDark/50"
+      class="peer border-ink-950/20 checked:border-signal-blue checked:bg-signal-blue focus-visible:outline-signal-blue/50 dark:border-paper-50/20 dark:checked:border-signal-blueDark dark:checked:bg-signal-blueDark dark:focus-visible:outline-signal-blueDark/50 absolute inset-0 h-full w-full cursor-pointer appearance-none rounded border-2 bg-transparent transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
     />
     <Check
-      class="pointer-events-none relative h-full w-full scale-90 stroke-[3] text-paper-50 opacity-0 transition-opacity peer-checked:opacity-100"
+      class="text-paper-50 pointer-events-none relative h-full w-full scale-90 stroke-[3] opacity-0 transition-opacity peer-checked:opacity-100"
     />
   </span>
 </template>

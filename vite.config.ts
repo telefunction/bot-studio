@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import vue from '@vitejs/plugin-vue';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, type Plugin, type ResolvedConfig } from 'vite';
 
 const FONT_EXTENSIONS = /\.(?:ttf|woff2?|otf)$/i;
@@ -186,7 +187,14 @@ function sitemapPlugin(): Plugin {
 
 export default defineConfig({
   base: './',
-  plugins: [vue(), inlineCssPlugin(), spaFallbackPlugin(), minifySchemaPlugin(), sitemapPlugin()],
+  plugins: [
+    vue(),
+    tailwindcss(),
+    inlineCssPlugin(),
+    spaFallbackPlugin(),
+    minifySchemaPlugin(),
+    sitemapPlugin(),
+  ],
   build: {
     outDir: 'docs',
     emptyOutDir: true,

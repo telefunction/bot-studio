@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, useId, useTemplateRef, watch } from 'vue';
-import { Check, Wand2, X } from 'lucide-vue-next';
+import { Check, Wand2, X } from '@lucide/vue';
 import type { TelegramParameter, TelegramSchema } from '@/types/schema';
 import {
   defaultForNode,
@@ -69,7 +69,7 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
     <Transition name="modal-pop">
       <div v-if="open" class="fixed inset-0 z-50 overflow-y-auto p-4" role="presentation">
         <div
-          class="fixed inset-0 bg-ink-950/50 backdrop-blur-sm dark:bg-black/70"
+          class="bg-ink-950/50 fixed inset-0 backdrop-blur-sm dark:bg-black/70"
           @click="cancel"
         />
         <div class="relative flex min-h-full items-center justify-center">
@@ -89,26 +89,26 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
             convention every field already uses in the form and inside this builder itself, instead
             of a standalone always-visible mono "field : type" line. -->
             <div
-              class="relative shrink-0 overflow-hidden border-b border-ink-950/[0.08] px-6 py-4 dark:border-paper-50/[0.08]"
+              class="border-ink-950/[0.08] dark:border-paper-50/[0.08] relative shrink-0 overflow-hidden border-b px-6 py-4"
             >
               <div
-                class="pointer-events-none absolute inset-0 bg-gradient-to-br from-signal-blue/[0.07] via-transparent to-signal-cyan/[0.06] dark:from-signal-blueDark/[0.12] dark:to-signal-cyan/[0.06]"
+                class="from-signal-blue/[0.07] to-signal-cyan/[0.06] dark:from-signal-blueDark/[0.12] dark:to-signal-cyan/[0.06] pointer-events-none absolute inset-0 bg-gradient-to-br via-transparent"
               />
               <div class="relative flex items-center gap-3">
                 <div class="relative shrink-0">
                   <span
-                    class="absolute inset-0 -z-10 animate-breathe rounded-2xl bg-signal-blue/40 blur-md dark:bg-signal-blueDark/40"
+                    class="animate-breathe bg-signal-blue/40 dark:bg-signal-blueDark/40 absolute inset-0 -z-10 rounded-2xl blur-md"
                     aria-hidden="true"
                   />
                   <div
-                    class="relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-signal-blue to-signal-cyan text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-cyan dark:shadow-glowDark"
+                    class="from-signal-blue to-signal-cyan text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-cyan dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br"
                   >
                     <Wand2 class="h-5 w-5" />
                   </div>
                 </div>
                 <div class="min-w-0 flex-1">
                   <p
-                    class="text-[0.68rem] font-black uppercase tracking-wide text-signal-blueHover/80 dark:text-signal-blueBright/80"
+                    class="text-signal-blueHover/80 dark:text-signal-blueBright/80 text-[0.68rem] font-black tracking-wide uppercase"
                   >
                     Visual builder
                   </p>
@@ -144,7 +144,7 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
             (formState starts as null) with an intentional placeholder instead of a blank flash. -->
               <div
                 v-else
-                class="flex h-40 flex-col items-center justify-center gap-2 text-center text-ink-700/60 dark:text-paper-300/60"
+                class="text-ink-700/60 dark:text-paper-300/60 flex h-40 flex-col items-center justify-center gap-2 text-center"
               >
                 <Wand2 class="h-6 w-6 animate-pulse" />
                 <p class="text-xs font-semibold">Preparing the builder…</p>
@@ -152,22 +152,22 @@ const { onKeydown } = useFocusTrap(dialogRef, cancel);
             </div>
 
             <div
-              class="flex shrink-0 items-center justify-between gap-3 border-t border-ink-950/[0.08] bg-paper-100/60 px-6 py-4 dark:border-paper-50/[0.08] dark:bg-navy-900/40"
+              class="border-ink-950/[0.08] bg-paper-100/60 dark:border-paper-50/[0.08] dark:bg-navy-900/40 flex shrink-0 items-center justify-between gap-3 border-t px-6 py-4"
             >
-              <p class="hidden text-[0.7rem] text-ink-700/70 dark:text-paper-300/70 sm:block">
+              <p class="text-ink-700/70 dark:text-paper-300/70 hidden text-[0.7rem] sm:block">
                 <span class="text-signal-red">*</span> Required fields
               </p>
               <div class="ml-auto flex items-center gap-2">
                 <button
                   type="button"
-                  class="rounded-lg border border-ink-950/[0.08] px-4 py-2 text-sm font-bold text-ink-700 transition hover:bg-paper-100 dark:border-paper-50/[0.08] dark:text-paper-300 dark:hover:bg-navy-800"
+                  class="border-ink-950/[0.08] text-ink-700 hover:bg-paper-100 dark:border-paper-50/[0.08] dark:text-paper-300 dark:hover:bg-navy-800 rounded-lg border px-4 py-2 text-sm font-bold transition"
                   @click="cancel"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  class="inline-flex items-center gap-1.5 rounded-lg border border-signal-blue bg-signal-blue px-4 py-2 text-sm font-black text-paper-50 transition hover:-translate-y-0.5 hover:bg-signal-blueHover dark:border-signal-blueDark dark:bg-signal-blueDark dark:hover:bg-signal-blueHover"
+                  class="border-signal-blue bg-signal-blue text-paper-50 hover:bg-signal-blueHover dark:border-signal-blueDark dark:bg-signal-blueDark dark:hover:bg-signal-blueHover inline-flex items-center gap-1.5 rounded-lg border px-4 py-2 text-sm font-black transition hover:-translate-y-0.5"
                   @click="save"
                 >
                   <Check class="h-4 w-4" /> Save to field

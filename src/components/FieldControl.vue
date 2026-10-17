@@ -69,7 +69,7 @@ function startResize(event: MouseEvent) {
 
 <template>
   <div
-    class="relative flex min-w-0 items-stretch rounded-lg border border-ink-950/[0.08] bg-paper-100 transition focus-within:border-signal-blue focus-within:ring-4 focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25"
+    class="border-ink-950/[0.08] bg-paper-100 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 relative flex min-w-0 items-stretch rounded-lg border transition focus-within:ring-4"
     :class="as === 'input' ? wrapperSizeClass : ['p-3', $slots.suffix ? 'pe-9' : '']"
   >
     <!-- Padding lives on this wrapper (not the textarea itself) for the textarea variant, and the
@@ -86,7 +86,7 @@ function startResize(event: MouseEvent) {
       :placeholder="placeholder ?? label"
       :aria-label="label"
       :disabled="disabled"
-      class="min-w-0 flex-1 resize-none bg-transparent outline-none disabled:text-ink-950 disabled:opacity-100 dark:disabled:text-paper-50"
+      class="disabled:text-ink-950 dark:disabled:text-paper-50 min-w-0 flex-1 resize-none bg-transparent outline-none disabled:opacity-100"
       :class="[controlTextClass, customHeightPx === null ? minHeight : '']"
       :style="customHeightPx !== null ? { height: `${customHeightPx}px` } : undefined"
     />
@@ -98,7 +98,7 @@ function startResize(event: MouseEvent) {
       :placeholder="placeholder ?? label"
       :aria-label="label"
       :disabled="disabled"
-      class="h-full min-w-0 flex-1 rounded-lg bg-transparent px-3 outline-none disabled:text-ink-950 disabled:opacity-100 dark:disabled:text-paper-50"
+      class="disabled:text-ink-950 dark:disabled:text-paper-50 h-full min-w-0 flex-1 rounded-lg bg-transparent px-3 outline-none disabled:opacity-100"
       :class="controlTextClass"
     />
     <!-- Textarea suffix content (the builder-wand button) floats over the top-right corner
@@ -114,7 +114,7 @@ function startResize(event: MouseEvent) {
     </span>
     <span
       v-else-if="$slots.suffix"
-      class="flex shrink-0 divide-x divide-ink-950/[0.08] self-stretch overflow-hidden rounded-r-lg dark:divide-paper-50/[0.08]"
+      class="divide-ink-950/[0.08] dark:divide-paper-50/[0.08] flex shrink-0 divide-x self-stretch overflow-hidden rounded-r-lg"
     >
       <slot name="suffix" />
     </span>
@@ -124,7 +124,7 @@ function startResize(event: MouseEvent) {
     glyph (h-2.5 w-2.5) — a small drag target in a box corner is fiddly to grab precisely otherwise. -->
     <div
       v-if="as === 'textarea'"
-      class="absolute bottom-0 end-0 flex h-5 w-5 cursor-ns-resize items-end justify-end p-1 text-ink-950/25 transition-colors hover:text-ink-950/50 dark:text-paper-50/25 dark:hover:text-paper-50/50"
+      class="text-ink-950/25 hover:text-ink-950/50 dark:text-paper-50/25 dark:hover:text-paper-50/50 absolute end-0 bottom-0 flex h-5 w-5 cursor-ns-resize items-end justify-end p-1 transition-colors"
       title="Drag to resize"
       @mousedown="startResize"
     >

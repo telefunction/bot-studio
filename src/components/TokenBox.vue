@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Eye, EyeOff, KeyRound } from 'lucide-vue-next';
+import { Eye, EyeOff, KeyRound } from '@lucide/vue';
 import { ref } from 'vue';
 import { maskToken } from '@/lib/telegram';
 
@@ -10,23 +10,23 @@ const visible = ref(false);
 
 <template>
   <section
-    class="mt-5 rounded-xl border border-ink-950/[0.08] bg-paper-100 p-4 dark:border-paper-50/[0.08] dark:bg-navy-800"
+    class="border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-800 mt-5 rounded-xl border p-4"
   >
     <div class="flex items-center justify-between gap-3">
       <label class="flex items-center gap-2 font-black" for="tokenInput">
-        <KeyRound class="h-4 w-4 text-signal-blue dark:text-signal-blueDark" />
+        <KeyRound class="text-signal-blue dark:text-signal-blueDark h-4 w-4" />
         Bot token
       </label>
-      <span class="max-w-[12rem] truncate font-mono text-xs text-ink-700 dark:text-paper-300">{{
+      <span class="text-ink-700 dark:text-paper-300 max-w-[12rem] truncate font-mono text-xs">{{
         maskToken(token)
       }}</span>
     </div>
 
     <div
-      class="mt-3 flex min-w-0 flex-nowrap overflow-hidden rounded-lg border border-ink-950/[0.08] bg-paper-50 focus-within:border-signal-blue focus-within:ring-4 focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25"
+      class="border-ink-950/[0.08] bg-paper-50 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 mt-3 flex min-w-0 flex-nowrap overflow-hidden rounded-lg border focus-within:ring-4"
     >
       <span
-        class="hidden h-11 shrink-0 items-center border-r border-ink-950/[0.08] bg-paper-200 px-3 font-mono text-sm font-black text-ink-700 dark:border-paper-50/[0.08] dark:bg-navy-700 dark:text-paper-300 sm:flex"
+        class="border-ink-950/[0.08] bg-paper-200 text-ink-700 dark:border-paper-50/[0.08] dark:bg-navy-700 dark:text-paper-300 hidden h-11 shrink-0 items-center border-r px-3 font-mono text-sm font-black sm:flex"
       >
         /bot
       </span>
@@ -51,13 +51,13 @@ const visible = ref(false);
       </button>
 
       <span
-        class="hidden h-11 max-w-[14rem] shrink-0 items-center truncate border-l border-ink-950/[0.08] bg-paper-200 px-3 font-mono text-sm font-black text-ink-700 dark:border-paper-50/[0.08] dark:bg-navy-700 dark:text-paper-300 sm:flex"
+        class="border-ink-950/[0.08] bg-paper-200 text-ink-700 dark:border-paper-50/[0.08] dark:bg-navy-700 dark:text-paper-300 hidden h-11 max-w-[14rem] shrink-0 items-center truncate border-l px-3 font-mono text-sm font-black sm:flex"
       >
         /{{ methodName || 'METHOD' }}
       </span>
     </div>
 
-    <p class="mt-2 text-xs leading-5 text-ink-700 dark:text-paper-300">
+    <p class="text-ink-700 dark:text-paper-300 mt-2 text-xs leading-5">
       Token is used only in this browser to call Telegram directly and is not stored by this app.
     </p>
   </section>

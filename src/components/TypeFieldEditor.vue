@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, useId, watch } from 'vue';
-import { ChevronDown, FileJson, MoveDown, MoveUp, Plus, Trash2, Upload } from 'lucide-vue-next';
+import { ChevronDown, FileJson, MoveDown, MoveUp, Plus, Trash2, Upload } from '@lucide/vue';
 import type { TelegramParameter, TelegramSchema } from '@/types/schema';
 import {
   MAX_NODE_DEPTH,
@@ -437,7 +437,7 @@ function setUnionValue(value: unknown) {
 <template>
   <div v-if="isDeadEnd" class="min-w-0">
     <div
-      class="mb-1 flex items-center gap-1.5 text-[0.7rem] font-bold text-ink-700 dark:text-paper-300"
+      class="text-ink-700 dark:text-paper-300 mb-1 flex items-center gap-1.5 text-[0.7rem] font-bold"
     >
       <FileJson class="h-3.5 w-3.5 shrink-0" />
       <span>Raw JSON{{ node.kind === 'custom' ? ` — ${node.type.name}` : '' }}</span>
@@ -449,7 +449,7 @@ function setUnionValue(value: unknown) {
       spellcheck="false"
       @input="onDraftInput"
     />
-    <p v-if="draftError" class="mt-1 text-[0.7rem] font-semibold text-signal-red">
+    <p v-if="draftError" class="text-signal-red mt-1 text-[0.7rem] font-semibold">
       Invalid JSON — keeping the last valid value.
     </p>
   </div>
@@ -459,7 +459,7 @@ function setUnionValue(value: unknown) {
   flip, just sized for a builder panel that can stack many fields. -->
   <label
     v-else-if="node.kind === 'primitive' && (node.name === 'Boolean' || node.name === 'True')"
-    class="flex items-center gap-2 text-sm font-bold text-ink-700 dark:text-paper-300"
+    class="text-ink-700 dark:text-paper-300 flex items-center gap-2 text-sm font-bold"
   >
     <AppCheckbox v-model="boolModel" />
     <span>{{ boolModel ? 'True' : 'False' }}</span>
@@ -532,7 +532,7 @@ function setUnionValue(value: unknown) {
             :required="entry.field.required"
             :type="entry.childNode.kind !== 'union' ? entry.field.type : undefined"
           />
-          <span class="flex shrink-0 items-center gap-1.5 text-ink-700/60 dark:text-paper-300/60">
+          <span class="text-ink-700/60 dark:text-paper-300/60 flex shrink-0 items-center gap-1.5">
             <span class="max-w-[10rem] truncate text-[0.68rem] font-semibold">
               {{ subFieldHint(entry.childNode, fieldValue(entry.field.name), entry.visited) }}
             </span>
@@ -548,7 +548,7 @@ function setUnionValue(value: unknown) {
           :style="{ gridTemplateRows: isExpanded(entry.field.name) ? '1fr' : '0fr' }"
         >
           <div class="overflow-hidden">
-            <div class="border-t border-ink-950/[0.08] p-3.5 dark:border-paper-50/[0.08]">
+            <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-t p-3.5">
               <ExpandableText
                 v-if="entry.field.description"
                 tag="p"
@@ -577,12 +577,12 @@ function setUnionValue(value: unknown) {
     <div
       v-for="(row, rowIndex) in rows2D"
       :key="rowIndex"
-      class="rounded-lg border border-ink-950/[0.08] bg-paper-100 p-3 dark:border-paper-50/[0.08] dark:bg-navy-900"
+      class="border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-900 rounded-lg border p-3"
       :aria-label="`Row ${rowIndex + 1}`"
     >
       <div class="mb-2.5 flex items-center justify-between gap-2">
         <span
-          class="text-[0.68rem] font-black uppercase tracking-wide text-ink-700 dark:text-paper-300"
+          class="text-ink-700 dark:text-paper-300 text-[0.68rem] font-black tracking-wide uppercase"
           >Row {{ rowIndex + 1 }}</span
         >
         <div class="flex items-center gap-1">
@@ -606,7 +606,7 @@ function setUnionValue(value: unknown) {
           </button>
           <button
             type="button"
-            class="icon-button h-7 w-7 hover:border-signal-red hover:text-signal-red"
+            class="icon-button hover:border-signal-red hover:text-signal-red h-7 w-7"
             title="Remove row"
             @click="removeRow(rowIndex)"
           >
@@ -648,7 +648,7 @@ function setUnionValue(value: unknown) {
             :style="{ gridTemplateRows: isExpanded(`${rowIndex}:${itemIndex}`) ? '1fr' : '0fr' }"
           >
             <div class="overflow-hidden">
-              <div class="border-t border-ink-950/[0.08] p-3.5 dark:border-paper-50/[0.08]">
+              <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-t p-3.5">
                 <TypeFieldEditor
                   :node="node.of.of"
                   :schema="schema"
@@ -682,7 +682,7 @@ function setUnionValue(value: unknown) {
     <label
       v-for="(item, index) in items"
       :key="index"
-      class="flex items-center gap-2 text-sm font-bold text-ink-700 dark:text-paper-300"
+      class="text-ink-700 dark:text-paper-300 flex items-center gap-2 text-sm font-bold"
     >
       <AppCheckbox
         :model-value="item === true"
@@ -690,7 +690,7 @@ function setUnionValue(value: unknown) {
       />
       <button
         type="button"
-        class="icon-button h-7 w-7 hover:border-signal-red hover:text-signal-red"
+        class="icon-button hover:border-signal-red hover:text-signal-red h-7 w-7"
         @click="removeArrayItem(index)"
       >
         <Trash2 class="h-3.5 w-3.5" />
@@ -716,7 +716,7 @@ function setUnionValue(value: unknown) {
       />
       <button
         type="button"
-        class="icon-button mt-1 h-7 w-7 shrink-0 hover:border-signal-red hover:text-signal-red"
+        class="icon-button hover:border-signal-red hover:text-signal-red mt-1 h-7 w-7 shrink-0"
         title="Remove"
         @click="removeArrayItem(index)"
       >
@@ -758,7 +758,7 @@ function setUnionValue(value: unknown) {
         :style="{ gridTemplateRows: isExpanded(`i:${index}`) ? '1fr' : '0fr' }"
       >
         <div class="overflow-hidden">
-          <div class="border-t border-ink-950/[0.08] p-3.5 dark:border-paper-50/[0.08]">
+          <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-t p-3.5">
             <TypeFieldEditor
               :node="node.of"
               :schema="schema"
@@ -784,7 +784,7 @@ function setUnionValue(value: unknown) {
       v-if="renderableBranchIndices.length > 1"
       role="group"
       :aria-label="`${field ? displayName(field.name) : 'Value'} type`"
-      class="scrollbar-none mb-3 flex gap-1.5 overflow-x-auto rounded-lg bg-paper-200 p-1 dark:bg-navy-900"
+      class="bg-paper-200 dark:bg-navy-900 mb-3 flex scrollbar-none gap-1.5 overflow-x-auto rounded-lg p-1"
     >
       <button
         v-for="index in renderableBranchIndices"

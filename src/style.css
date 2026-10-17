@@ -1,7 +1,47 @@
-@tailwind base;
+@import 'tailwindcss';
 
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme {
+  --color-ink-950: #000000;
+  --color-ink-700: #616365;
+  --color-paper-50: #ffffff;
+  --color-paper-100: #f7f7f7;
+  --color-paper-200: #e8e8e8;
+  --color-paper-300: #919ba6;
+  --color-navy-900: #17212b;
+  --color-navy-800: #1c2733;
+  --color-navy-700: #232e3c;
+  --color-signal-blue: #0088cc;
+  --color-signal-blueHover: #0077b3;
+  --color-signal-blueDark: #3390ec;
+  --color-signal-blueBright: #5eb0f3;
+  --color-signal-cyan: #3dd6c6;
+  --color-signal-lime: #a9e34b;
+  --color-signal-amber: #f5b84b;
+  --color-signal-red: #ff5d4f;
+  --shadow-soft: 0 1px 0 0 rgb(255 255 255 / 0.6) inset, 0 18px 60px rgb(0 0 0 / 0.1);
+  --shadow-darkSoft: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 18px 60px rgb(0 0 0 / 0.38);
+  --shadow-glow: 0 8px 24px rgb(0 136 204 / 0.35);
+  --shadow-glowDark: 0 8px 24px rgb(51 144 236 / 0.45);
+  --animate-breathe: breathe 3.2s ease-in-out infinite;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Lucida Grande', ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.45;
+      transform: scale(0.94);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.04);
+    }
+  }
+}
 
 @layer base {
   @font-face {
@@ -144,19 +184,19 @@
 
 @layer components {
   .app-shell {
-    @apply min-h-screen bg-paper-50 text-ink-950 transition-colors duration-200 dark:bg-[var(--page-bg)] dark:text-paper-50;
+    @apply bg-paper-50 text-ink-950 dark:text-paper-50 min-h-screen transition-colors duration-200 dark:bg-[var(--page-bg)];
   }
 
   .panel {
-    @apply min-w-0 border border-ink-950/[0.08] bg-paper-50/95 shadow-soft backdrop-blur-xl dark:border-paper-50/[0.08] dark:bg-[var(--panel-bg)] dark:shadow-darkSoft;
+    @apply border-ink-950/[0.08] bg-paper-50/95 shadow-soft dark:border-paper-50/[0.08] dark:shadow-darkSoft min-w-0 border backdrop-blur-xl dark:bg-[var(--panel-bg)];
   }
 
   .control {
-    @apply w-full min-w-0 rounded-lg border border-ink-950/[0.08] bg-paper-100 px-3 text-ink-950 outline-none transition duration-200 ease-out hover:border-ink-950/20 focus:border-signal-blue focus:ring-4 focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:text-paper-50 dark:hover:border-paper-50/20 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25;
+    @apply border-ink-950/[0.08] bg-paper-100 text-ink-950 hover:border-ink-950/20 focus:border-signal-blue focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:text-paper-50 dark:hover:border-paper-50/20 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25 w-full min-w-0 rounded-lg border px-3 transition duration-200 ease-out outline-none focus:ring-4;
   }
 
   .icon-button {
-    @apply inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-ink-950/[0.08] bg-paper-100 text-ink-700 transition duration-200 ease-out hover:-translate-y-px hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:outline-none focus:ring-4 focus:ring-signal-blue/15 active:translate-y-0 active:scale-90 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-300 dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25;
+    @apply border-ink-950/[0.08] bg-paper-100 text-ink-700 hover:border-signal-blueHover hover:bg-signal-blue/10 hover:text-signal-blueHover focus:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-300 dark:hover:border-signal-blueBright dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright dark:focus:ring-signal-blueDark/25 inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border transition duration-200 ease-out hover:-translate-y-px focus:ring-4 focus:outline-none active:translate-y-0 active:scale-90;
   }
 
   /* A button "attached" to the end of a FieldControl (upload, remove, ...): flush against the box
@@ -165,15 +205,15 @@
   siblings are separated by the divide-x border FieldControl puts on their shared wrapper; that
   wrapper also owns the outer rounded corner, so this class itself stays square. */
   .control-suffix-button {
-    @apply grid h-full w-11 shrink-0 place-items-center text-ink-700 transition duration-200 ease-out hover:bg-signal-blue/10 hover:text-signal-blueHover focus:outline-none focus:ring-2 focus:ring-inset focus:ring-signal-blue/40 active:scale-90 dark:text-paper-300 dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright;
+    @apply text-ink-700 hover:bg-signal-blue/10 hover:text-signal-blueHover focus:ring-signal-blue/40 dark:text-paper-300 dark:hover:bg-signal-blueDark/15 dark:hover:text-signal-blueBright grid h-full w-11 shrink-0 place-items-center transition duration-200 ease-out focus:ring-2 focus:outline-none focus:ring-inset active:scale-90;
   }
 
   .code-pane {
-    @apply max-h-[34rem] overflow-auto rounded-xl bg-ink-950 p-4 font-mono text-[0.82rem] leading-6 text-paper-100 shadow-inner dark:bg-black;
+    @apply bg-ink-950 text-paper-100 max-h-[34rem] overflow-auto rounded-xl p-4 font-mono text-[0.82rem] leading-6 shadow-inner dark:bg-black;
   }
 
   .empty-pane {
-    @apply rounded-xl border border-dashed border-ink-950/15 bg-paper-100 p-4 text-sm leading-6 text-ink-700 dark:border-paper-50/15 dark:bg-navy-800 dark:text-paper-300;
+    @apply border-ink-950/15 bg-paper-100 text-ink-700 dark:border-paper-50/15 dark:bg-navy-800 dark:text-paper-300 rounded-xl border border-dashed p-4 text-sm leading-6;
   }
 }
 

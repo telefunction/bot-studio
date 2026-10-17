@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onErrorCaptured, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
-import { Bot, Moon, Sun, Monitor, Github, Send, TriangleAlert } from 'lucide-vue-next';
+import { Bot, Moon, Sun, Monitor, CodeXml, Send, TriangleAlert } from '@lucide/vue';
 import { version as appVersion } from '../package.json';
 import ExpandableText from '@/components/ExpandableText.vue';
 import MethodSidebar from '@/components/MethodSidebar.vue';
@@ -111,33 +111,33 @@ onUnmounted(() => {
     <PrivacyNoticeModal v-model:open="privacyNoticeOpen" />
 
     <header
-      class="sticky top-0 z-30 border-b border-ink-950/[0.08] bg-paper-50/[0.84] px-4 py-3 backdrop-blur-[25px] dark:border-paper-50/[0.08] dark:bg-[var(--page-bg)] dark:backdrop-blur-none sm:px-6"
+      class="border-ink-950/[0.08] bg-paper-50/[0.84] dark:border-paper-50/[0.08] sticky top-0 z-30 border-b px-4 py-3 backdrop-blur-[25px] sm:px-6 dark:bg-[var(--page-bg)] dark:backdrop-blur-none"
     >
       <div class="mx-auto flex w-full max-w-[1540px] flex-row items-center justify-between gap-3">
         <a
           :href="homeHref"
-          class="group flex min-w-0 items-center gap-3 rounded-lg transition focus:outline-none focus-visible:ring-4 focus-visible:ring-signal-blue/15 dark:focus-visible:ring-signal-blueDark/25"
+          class="group focus-visible:ring-signal-blue/15 dark:focus-visible:ring-signal-blueDark/25 flex min-w-0 items-center gap-3 rounded-lg transition focus:outline-none focus-visible:ring-4"
           aria-label="Bot Studio home"
           @click="onLogoClick"
         >
           <div class="relative shrink-0">
             <span
-              class="absolute inset-0 -z-10 animate-breathe rounded-xl bg-signal-blue/50 blur-md dark:bg-signal-blueDark/50"
+              class="animate-breathe bg-signal-blue/50 dark:bg-signal-blueDark/50 absolute inset-0 -z-10 rounded-xl blur-md"
               aria-hidden="true"
             />
             <div
-              class="relative grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-signal-blue to-signal-blueHover text-paper-50 shadow-glow transition-transform duration-300 ease-out group-hover:-rotate-3 group-hover:scale-105 dark:from-signal-blueDark dark:to-signal-blueBright dark:shadow-glowDark"
+              class="from-signal-blue to-signal-blueHover text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-blueBright dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-rotate-3"
             >
               <Bot class="h-6 w-6" />
             </div>
           </div>
           <div class="flex min-w-0 items-baseline gap-1.5">
             <h1
-              class="min-w-0 truncate bg-gradient-to-r from-ink-950 via-ink-950 to-signal-blueHover bg-clip-text text-xl font-black tracking-normal text-transparent dark:from-paper-50 dark:via-paper-50 dark:to-signal-blueBright"
+              class="from-ink-950 via-ink-950 to-signal-blueHover dark:from-paper-50 dark:via-paper-50 dark:to-signal-blueBright min-w-0 truncate bg-gradient-to-r bg-clip-text text-xl font-black tracking-normal text-transparent"
             >
               Bot Studio
             </h1>
-            <span class="shrink-0 font-mono text-xs font-bold text-ink-700 dark:text-paper-300">
+            <span class="text-ink-700 dark:text-paper-300 shrink-0 font-mono text-xs font-bold">
               v{{ appVersion }}
             </span>
           </div>
@@ -154,7 +154,7 @@ onUnmounted(() => {
             <component :is="themeIcon" class="h-4 w-4" />
             <span
               role="tooltip"
-              class="pointer-events-none absolute left-1/2 top-full z-40 mt-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md border border-ink-950/[0.08] bg-paper-50 px-2 py-1 text-xs font-bold text-ink-950 opacity-0 shadow-soft transition duration-150 group-hover/theme:translate-y-0 group-hover/theme:opacity-100 group-focus-visible/theme:translate-y-0 group-focus-visible/theme:opacity-100 dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft"
+              class="border-ink-950/[0.08] bg-paper-50 text-ink-950 shadow-soft dark:border-paper-50/[0.08] dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft pointer-events-none absolute top-full left-1/2 z-40 mt-2 -translate-x-1/2 translate-y-1 rounded-md border px-2 py-1 text-xs font-bold whitespace-nowrap opacity-0 transition duration-150 group-hover/theme:translate-y-0 group-hover/theme:opacity-100 group-focus-visible/theme:translate-y-0 group-focus-visible/theme:opacity-100"
             >
               {{ themeLabel }}
             </span>
@@ -176,7 +176,7 @@ onUnmounted(() => {
             title="telefunction"
             aria-label="View Bot Studio source on GitHub"
           >
-            <Github class="h-4 w-4" />
+            <CodeXml class="h-4 w-4" />
           </a>
         </div>
       </div>
@@ -186,14 +186,14 @@ onUnmounted(() => {
       v-if="fatalError"
       class="mx-auto flex w-full max-w-[1540px] flex-col items-center gap-3 p-10 text-center"
     >
-      <TriangleAlert class="h-8 w-8 text-signal-red" />
-      <h2 class="text-2xl font-black leading-none tracking-normal">Something went wrong</h2>
-      <p class="max-w-md text-sm leading-7 text-ink-700 dark:text-paper-300">
+      <TriangleAlert class="text-signal-red h-8 w-8" />
+      <h2 class="text-2xl leading-none font-black tracking-normal">Something went wrong</h2>
+      <p class="text-ink-700 dark:text-paper-300 max-w-md text-sm leading-7">
         Bot Studio hit an unexpected error and can't continue safely. Reloading should fix it.
       </p>
       <button
         type="button"
-        class="mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-signal-blue bg-gradient-to-r from-signal-blue to-signal-blueHover px-4 font-black text-paper-50 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-glow active:translate-y-0 active:scale-[0.98] dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark"
+        class="border-signal-blue from-signal-blue to-signal-blueHover text-paper-50 hover:shadow-glow dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark mt-2 inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border bg-gradient-to-r px-4 font-black transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
         @click="reloadPage"
       >
         Reload
@@ -222,17 +222,17 @@ onUnmounted(() => {
           @select="selectMethod"
         />
         <template v-else>
-          <div class="border-b border-ink-950/[0.08] pb-5 dark:border-paper-50/[0.08]">
+          <div class="border-ink-950/[0.08] dark:border-paper-50/[0.08] border-b pb-5">
             <div class="flex min-w-0 items-start justify-between gap-3">
               <div class="min-w-0">
                 <h2
-                  class="break-words text-3xl font-black leading-none tracking-normal sm:text-5xl"
+                  class="text-3xl leading-none font-black tracking-normal break-words sm:text-5xl"
                 >
                   {{ selected?.name || 'Select a method' }}
                 </h2>
                 <ExpandableText
                   tag="p"
-                  class="mt-3 max-w-4xl text-sm leading-7 text-ink-700 dark:text-paper-300"
+                  class="text-ink-700 dark:text-paper-300 mt-3 max-w-4xl text-sm leading-7"
                   :text="
                     selected?.description ||
                     'Search or browse the generated Telegram Bot API schema, then choose a method to build a request.'
@@ -261,14 +261,14 @@ onUnmounted(() => {
 
             <div
               v-if="formError"
-              class="mt-4 rounded-lg border border-signal-red/30 bg-signal-red/10 p-3 text-sm font-semibold text-signal-red"
+              class="border-signal-red/30 bg-signal-red/10 text-signal-red mt-4 rounded-lg border p-3 text-sm font-semibold"
             >
               {{ formError }}
             </div>
 
             <div class="mt-5 flex flex-col gap-2 sm:flex-row">
               <button
-                class="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-signal-blue bg-gradient-to-r from-signal-blue to-signal-blueHover px-4 font-black text-paper-50 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-glow active:translate-y-0 active:scale-[0.98] disabled:hover:translate-y-0 disabled:hover:shadow-none dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark"
+                class="border-signal-blue from-signal-blue to-signal-blueHover text-paper-50 hover:shadow-glow dark:border-signal-blueDark dark:from-signal-blueDark dark:to-signal-blueBright dark:hover:shadow-glowDark inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border bg-gradient-to-r px-4 font-black transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] disabled:hover:translate-y-0 disabled:hover:shadow-none"
                 type="submit"
                 :disabled="!selected || response.status === 'loading'"
               >
@@ -293,12 +293,12 @@ onUnmounted(() => {
     </main>
 
     <footer
-      class="mx-auto mt-8 flex w-full max-w-[1540px] flex-col items-center justify-center gap-2 px-4 pb-5 text-center text-sm font-semibold text-ink-700 dark:text-paper-300 sm:flex-row sm:justify-between sm:text-left"
+      class="text-ink-700 dark:text-paper-300 mx-auto mt-8 flex w-full max-w-[1540px] flex-col items-center justify-center gap-2 px-4 pb-5 text-center text-sm font-semibold sm:flex-row sm:justify-between sm:text-left"
     >
       <div>
         Powered by
         <a
-          class="font-black text-signal-blueHover hover:underline dark:text-signal-blueDark dark:hover:text-signal-blueBright"
+          class="text-signal-blueHover dark:text-signal-blueDark dark:hover:text-signal-blueBright font-black hover:underline"
           href="https://github.com/telefunction"
           target="_blank"
           rel="noreferrer"
@@ -309,7 +309,7 @@ onUnmounted(() => {
       </div>
 
       <div
-        class="flex flex-nowrap items-center justify-center gap-2 whitespace-nowrap font-mono text-xs uppercase tracking-normal"
+        class="flex flex-nowrap items-center justify-center gap-2 font-mono text-xs tracking-normal whitespace-nowrap uppercase"
       >
         <span>{{ schema?.methodCount || 0 }} methods</span>
         <span>·</span>

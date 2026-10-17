@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watch } from 'vue';
-import { Search, SlidersHorizontal } from 'lucide-vue-next';
+import { Search, SlidersHorizontal } from '@lucide/vue';
 import type { TelegramMethod } from '@/types/schema';
 import { navigateOnClick } from '@/lib/navigation';
 
@@ -68,9 +68,9 @@ onUnmounted(cancelPendingGrowth);
 <template>
   <aside class="panel self-start overflow-hidden rounded-2xl p-4">
     <div
-      class="flex h-11 items-center gap-2 rounded-lg border border-ink-950/[0.08] bg-paper-100 px-3 transition focus-within:border-signal-blue focus-within:ring-4 focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25"
+      class="border-ink-950/[0.08] bg-paper-100 focus-within:border-signal-blue focus-within:ring-signal-blue/15 dark:border-paper-50/[0.08] dark:bg-navy-900 dark:focus-within:border-signal-blueDark dark:focus-within:ring-signal-blueDark/25 flex h-11 items-center gap-2 rounded-lg border px-3 transition focus-within:ring-4"
     >
-      <Search class="h-4 w-4 shrink-0 text-ink-700 dark:text-paper-300" />
+      <Search class="text-ink-700 dark:text-paper-300 h-4 w-4 shrink-0" />
       <input
         v-model="search"
         class="min-w-0 flex-1 bg-transparent text-sm outline-none"
@@ -80,9 +80,9 @@ onUnmounted(cancelPendingGrowth);
     </div>
 
     <div
-      class="mt-3 flex h-11 items-center gap-2 rounded-lg border border-ink-950/[0.08] bg-paper-100 px-3 dark:border-paper-50/[0.08] dark:bg-navy-900"
+      class="border-ink-950/[0.08] bg-paper-100 dark:border-paper-50/[0.08] dark:bg-navy-900 mt-3 flex h-11 items-center gap-2 rounded-lg border px-3"
     >
-      <SlidersHorizontal class="h-4 w-4 shrink-0 text-ink-700 dark:text-paper-300" />
+      <SlidersHorizontal class="text-ink-700 dark:text-paper-300 h-4 w-4 shrink-0" />
       <select
         v-model="category"
         class="min-w-0 flex-1 bg-transparent text-sm font-bold outline-none"
@@ -103,14 +103,14 @@ onUnmounted(cancelPendingGrowth);
         class="group relative min-w-0 rounded-lg border p-3 text-left transition duration-200 ease-out hover:-translate-y-0.5"
         :class="
           selectedName === method.name
-            ? 'border-signal-blue/40 bg-signal-blue/[0.07] shadow-soft before:absolute before:inset-y-2.5 before:left-1 before:w-[3px] before:rounded-full before:bg-gradient-to-b before:from-signal-blue before:to-signal-blueBright dark:border-signal-blueDark/40 dark:bg-signal-blueDark/10 dark:shadow-darkSoft dark:before:from-signal-blueDark dark:before:to-signal-blueBright'
+            ? 'border-signal-blue/40 bg-signal-blue/[0.07] shadow-soft before:from-signal-blue before:to-signal-blueBright dark:border-signal-blueDark/40 dark:bg-signal-blueDark/10 dark:shadow-darkSoft dark:before:from-signal-blueDark dark:before:to-signal-blueBright before:absolute before:inset-y-2.5 before:left-1 before:w-[3px] before:rounded-full before:bg-gradient-to-b'
             : 'border-ink-950/[0.08] bg-paper-50 hover:border-signal-blue/60 hover:bg-paper-100 hover:shadow-soft dark:border-paper-50/[0.08] dark:bg-navy-800 dark:hover:border-signal-blueDark/60 dark:hover:bg-navy-700 dark:hover:shadow-darkSoft'
         "
         :aria-current="selectedName === method.name ? 'page' : undefined"
         @click="onMethodClick($event, method)"
       >
         <strong class="block truncate text-sm font-black">{{ method.name }}</strong>
-        <span class="mt-1 block truncate text-xs leading-5 text-ink-700 dark:text-paper-300">
+        <span class="text-ink-700 dark:text-paper-300 mt-1 block truncate text-xs leading-5">
           {{ method.description || 'No description available.' }}
         </span>
       </a>

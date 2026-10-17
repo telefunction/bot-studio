@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { nextTick, useId, useTemplateRef, watch } from 'vue';
-import { X } from 'lucide-vue-next';
+import { X } from '@lucide/vue';
 import { useFocusTrap } from '@/composables/useFocusTrap';
 
 defineProps<{ title: string }>();
@@ -30,7 +30,7 @@ const { onKeydown } = useFocusTrap(dialogRef, close);
         role="presentation"
       >
         <div
-          class="absolute inset-0 bg-ink-950/50 backdrop-blur-sm dark:bg-black/70"
+          class="bg-ink-950/50 absolute inset-0 backdrop-blur-sm dark:bg-black/70"
           @click="close"
         />
         <div
@@ -43,7 +43,7 @@ const { onKeydown } = useFocusTrap(dialogRef, close);
           @keydown="onKeydown"
         >
           <div
-            class="flex items-center justify-between gap-3 border-b border-ink-950/[0.08] px-5 py-4 dark:border-paper-50/[0.08]"
+            class="border-ink-950/[0.08] dark:border-paper-50/[0.08] flex items-center justify-between gap-3 border-b px-5 py-4"
           >
             <h3 :id="titleId" class="truncate text-lg font-black">{{ title }}</h3>
             <div class="flex items-center gap-2">

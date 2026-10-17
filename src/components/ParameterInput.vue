@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, nextTick, ref, useTemplateRef, watch } from 'vue';
-import { Upload, Wand2, X } from 'lucide-vue-next';
+import { Upload, Wand2, X } from '@lucide/vue';
 import type { FileValue, ParamValue, TelegramParameter, TelegramSchema } from '@/types/schema';
 import { displayName, fileAccept, inferKind } from '@/lib/telegram';
 import { resolvableVariants } from '@/lib/typeSchema';
@@ -80,7 +80,7 @@ function onFile(event: Event) {
 
 <template>
   <div
-    class="min-w-0 rounded-xl border border-ink-950/[0.08] bg-paper-50 p-4 dark:border-paper-50/[0.08] dark:bg-navy-800"
+    class="border-ink-950/[0.08] bg-paper-50 dark:border-paper-50/[0.08] dark:bg-navy-800 min-w-0 rounded-xl border p-4"
   >
     <FieldMeta
       :name="displayName(parameter.name)"
@@ -90,7 +90,7 @@ function onFile(event: Event) {
     />
     <ExpandableText
       tag="blockquote"
-      class="mt-3 min-h-5 rounded-md border-l-4 border-signal-blue/40 bg-signal-blue/5 p-1 pl-2 text-xs italic leading-5 text-ink-700 dark:border-signal-blueDark/50 dark:bg-navy-700 dark:text-paper-300"
+      class="border-signal-blue/40 bg-signal-blue/5 text-ink-700 dark:border-signal-blueDark/50 dark:bg-navy-700 dark:text-paper-300 mt-3 min-h-5 rounded-md border-l-4 p-1 pl-2 text-xs leading-5 italic"
       :text="parameter.description"
       :lines="2"
     />
@@ -102,7 +102,7 @@ function onFile(event: Event) {
     the same way at every depth. -->
     <label
       v-if="kind === 'boolean'"
-      class="mt-4 flex items-center gap-3 text-sm font-bold text-ink-700 dark:text-paper-300"
+      class="text-ink-700 dark:text-paper-300 mt-4 flex items-center gap-3 text-sm font-bold"
     >
       <AppCheckbox v-model="booleanValue" size="md" />
       {{ booleanValue ? 'True' : 'False' }}
@@ -131,7 +131,7 @@ function onFile(event: Event) {
           </button>
         </template>
       </FieldControl>
-      <p class="mt-2 truncate text-xs text-ink-700 dark:text-paper-300">
+      <p class="text-ink-700 dark:text-paper-300 mt-2 truncate text-xs">
         {{
           fileState.mode === 'file'
             ? `Selected: ${fileState.file?.name}`
