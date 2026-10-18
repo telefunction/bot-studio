@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { Info } from '@lucide/vue';
+import { nextTick, ref, useId, useTemplateRef, watch } from 'vue';
 
-// Shared field-header line ("Name [*required] [ⓘ]") used by both the top-level ParameterInput.vue
-// form and the nested TypeFieldEditor.vue builder, at two scales. The type is tucked behind an info
-// glyph (reusing App.vue's theme-switcher hover/focus reveal pattern, on plain `focus` so touch taps
-// open it too) rather than shown inline, so it doesn't compete with the name for attention.
 withDefaults(
   defineProps<{
     name: string;
@@ -16,6 +13,46 @@ withDefaults(
   }>(),
   { size: 'lg', as: 'div', type: undefined, htmlFor: undefined },
 );
+const tooltipId = useId();
+const triggerRef = useTemplateRef<HTMLButtonElement>('triggerRef');
+const tooltipRef = useTemplateRef<HTMLElement>('tooltipRef');
+const tooltipOpen = ref(false);
+const tooltipPosition = ref({ left: '0px', top: '0px' });
+
+async function showTooltip() {
+  tooltipOpen.value = true;
+  await nextTick();
+  const trigger = triggerRef.value;
+  const tooltip = tooltipRef.value;
+  if (!trigger || !tooltip) return;
+  const anchor = trigger.getBoundingClientRect();
+  const bounds = tooltip.getBoundingClientRect();
+  const margin = parseFloat(getComputedStyle(tooltip).getPropertyValue('--tooltip-margin'));
+  const left = Math.max(
+    margin,
+    Math.min(
+      anchor.left + (anchor.width - bounds.width) / 2,
+      window.innerWidth - bounds.width - margin,
+    ),
+  );
+  const top =
+    anchor.top >= bounds.height + margin * 2
+      ? anchor.top - bounds.height - margin
+      : Math.min(anchor.bottom + margin, window.innerHeight - bounds.height - margin);
+  tooltipPosition.value = { left: `${left}px`, top: `${Math.max(margin, top)}px` };
+}
+function hideTooltip() {
+  tooltipOpen.value = false;
+}
+watch(tooltipOpen, (isOpen, _previous, onCleanup) => {
+  if (!isOpen) return;
+  window.addEventListener('scroll', hideTooltip, true);
+  window.addEventListener('resize', hideTooltip);
+  onCleanup(() => {
+    window.removeEventListener('scroll', hideTooltip, true);
+    window.removeEventListener('resize', hideTooltip);
+  });
+});
 </script>
 
 <template>
@@ -25,23 +62,38 @@ withDefaults(
     class="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5"
     :class="size === 'lg' ? 'font-black' : 'text-ink-700 dark:text-paper-300 text-xs font-bold'"
   >
-    <span class="min-w-0 wrap-break-word">{{ name }}</span>
+    <span class="min-w-0 wrap-anywhere">{{ name }}</span>
     <span v-if="required" class="text-signal-red">*</span>
-    <span v-if="type" class="group/type relative inline-flex shrink-0">
+    <span
+      v-if="type"
+      class="inline-flex shrink-0"
+      @mouseenter="showTooltip"
+      @mouseleave="hideTooltip"
+      @focusin="showTooltip"
+      @focusout="hideTooltip"
+      @keydown.esc.stop="hideTooltip"
+    >
       <button
+        ref="triggerRef"
         type="button"
         class="text-ink-700/50 hover:text-signal-blueHover focus:text-signal-blueHover dark:text-paper-300/50 dark:hover:text-signal-blueBright dark:focus:text-signal-blueBright inline-flex items-center justify-center rounded-full transition focus:outline-none"
         :class="size === 'lg' ? 'h-4 w-4' : 'h-3.5 w-3.5'"
         :aria-label="`Type: ${type}`"
+        :aria-describedby="tooltipOpen ? tooltipId : undefined"
       >
         <Info :class="size === 'lg' ? 'h-3.5 w-3.5' : 'h-3 w-3'" />
       </button>
-      <span
-        role="tooltip"
-        class="border-ink-950/8 bg-paper-50 text-ink-950 shadow-soft dark:border-paper-50/8 dark:bg-navy-800 dark:text-paper-50 dark:shadow-darkSoft pointer-events-none absolute bottom-full left-1/2 z-50 mb-1.5 -translate-x-1/2 translate-y-1 rounded-md border px-2 py-1 font-mono text-[0.68rem] font-bold whitespace-nowrap opacity-0 transition duration-150 group-focus-within/type:translate-y-0 group-focus-within/type:opacity-100 group-hover/type:translate-y-0 group-hover/type:opacity-100"
-      >
-        {{ type }}
-      </span>
+      <Teleport to="body">
+        <span
+          v-if="tooltipOpen"
+          :id="tooltipId"
+          ref="tooltipRef"
+          role="tooltip"
+          class="field-tooltip"
+          :style="tooltipPosition"
+          >{{ type }}</span
+        >
+      </Teleport>
     </span>
   </component>
 </template>

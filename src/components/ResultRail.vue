@@ -34,6 +34,7 @@ const statusClass = computed(() => {
 
 const requestFullscreen = ref(false);
 const responseFullscreen = ref(false);
+const activeTab = defineModel<'request' | 'response'>('activeTab', { default: 'request' });
 const requestMaximizeBtn = useTemplateRef<HTMLButtonElement>('requestMaximizeBtn');
 const responseMaximizeBtn = useTemplateRef<HTMLButtonElement>('responseMaximizeBtn');
 
@@ -64,101 +65,159 @@ watch(requestFullscreen, (isOpen, wasOpen) => {
 watch(responseFullscreen, (isOpen, wasOpen) => {
   if (!isOpen && wasOpen) nextTick(() => responseMaximizeBtn.value?.focus());
 });
+watch(
+  () => props.response.status,
+  (status) => {
+    if (status === 'loading') activeTab.value = 'response';
+  },
+);
 </script>
 
 <template>
   <aside class="grid min-w-0 content-start gap-4 xl:block xl:space-y-4">
-    <section class="panel min-w-0 rounded-2xl p-4">
+    <section class="panel flex min-w-0 flex-col overflow-hidden p-3 sm:p-4">
       <div class="mb-3 flex items-center justify-between gap-3">
-        <h3 class="text-lg font-black">Request</h3>
-        <div class="flex items-center gap-2">
+        <div
+          class="bg-paper-100 dark:bg-navy-900 grid grid-cols-2 gap-1 rounded-xl p-1"
+          role="group"
+          aria-label="Request and response"
+        >
           <button
-            ref="requestMaximizeBtn"
-            class="icon-button"
+            id="request-tab"
             type="button"
-            title="Maximize request"
-            aria-label="Maximize request"
-            @click="requestFullscreen = true"
+            :aria-pressed="activeTab === 'request'"
+            class="rounded-lg px-3 py-2 text-xs font-bold transition"
+            :class="
+              activeTab === 'request'
+                ? 'bg-paper-50 text-ink-950 dark:bg-navy-700 dark:text-paper-50 shadow-sm'
+                : 'text-ink-700 dark:text-paper-300'
+            "
+            @click="activeTab = 'request'"
           >
-            <Maximize2 class="h-4 w-4" />
+            Request
           </button>
           <button
-            class="icon-button"
+            id="response-tab"
             type="button"
-            title="Copy request JSON"
-            @click="$emit('copyRequest')"
+            :aria-pressed="activeTab === 'response'"
+            class="flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold transition"
+            :class="
+              activeTab === 'response'
+                ? 'bg-paper-50 text-ink-950 dark:bg-navy-700 dark:text-paper-50 shadow-sm'
+                : 'text-ink-700 dark:text-paper-300'
+            "
+            @click="activeTab = 'response'"
           >
-            <Clipboard class="h-4 w-4" />
+            Response
+            <span class="h-1.5 w-1.5 rounded-full" :class="statusClass" />
           </button>
         </div>
+        <span
+          class="inline-flex h-8 items-center gap-1 rounded-lg px-2 font-mono text-[0.68rem] font-bold uppercase"
+          :class="statusClass"
+        >
+          <Loader2 v-if="response.status === 'loading'" class="h-3.5 w-3.5 animate-spin" />
+          <CheckCircle2 v-else-if="response.status === 'ok'" class="h-3.5 w-3.5" />
+          <ServerCrash
+            v-else-if="response.status === 'failed' || String(response.status).startsWith('HTTP')"
+            class="h-3.5 w-3.5"
+          />
+          {{ response.status }}
+        </span>
       </div>
-      <div class="code-pane json-editor-shell min-h-48 w-full resize-y">
-        <!-- eslint-disable vue/no-v-html -- highlightJson() escapes all source text; only its own generated <span> wrappers are unescaped. -->
-        <pre
-          ref="requestBackdropEl"
-          class="json-editor-box json-editor-backdrop"
-          aria-hidden="true"
-          v-html="highlightedRequest"
-        ></pre>
-        <!-- eslint-enable vue/no-v-html -->
-        <textarea
-          v-model="requestJson"
-          class="json-editor-box json-editor-input"
-          spellcheck="false"
-          aria-label="Request JSON"
-          @scroll="syncRequestScroll"
-        />
-      </div>
-      <p
-        v-if="requestError"
-        class="border-signal-red/30 bg-signal-red/10 text-signal-red mt-2 rounded-md border p-2 text-xs font-bold"
-      >
-        {{ requestError }}
-      </p>
-    </section>
 
-    <section class="panel min-w-0 rounded-2xl p-4">
-      <div class="mb-3 flex items-center justify-between gap-3">
-        <h3 class="text-lg font-black">Response</h3>
-        <div class="flex items-center gap-2">
-          <span
-            class="inline-flex h-8 items-center gap-1 rounded-md px-2 font-mono text-xs font-black uppercase"
-            :class="statusClass"
-          >
-            <Loader2 v-if="response.status === 'loading'" class="h-3.5 w-3.5 animate-spin" />
-            <CheckCircle2 v-else-if="response.status === 'ok'" class="h-3.5 w-3.5" />
-            <ServerCrash
-              v-else-if="response.status === 'failed' || String(response.status).startsWith('HTTP')"
-              class="h-3.5 w-3.5"
-            />
-            {{ response.status }}
-          </span>
-          <button
-            ref="responseMaximizeBtn"
-            class="icon-button"
-            type="button"
-            title="Maximize response"
-            aria-label="Maximize response"
-            :disabled="!responseText"
-            @click="responseFullscreen = true"
-          >
-            <Maximize2 class="h-4 w-4" />
-          </button>
-          <button
-            class="icon-button"
-            type="button"
-            title="Copy response JSON"
-            :disabled="!response.payload"
-            @click="$emit('copyResponse')"
-          >
-            <Clipboard class="h-4 w-4" />
-          </button>
+      <div v-if="activeTab === 'request'" id="request-panel" class="min-w-0">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-bold">Request JSON</h3>
+            <p class="text-ink-700 dark:text-paper-300 mt-0.5 text-xs">
+              Edit the payload before sending
+            </p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button
+              ref="requestMaximizeBtn"
+              class="icon-button"
+              type="button"
+              title="Maximize request"
+              aria-label="Maximize request"
+              @click="requestFullscreen = true"
+            >
+              <Maximize2 class="h-4 w-4" />
+            </button>
+            <button
+              class="icon-button"
+              type="button"
+              title="Copy request JSON"
+              aria-label="Copy request JSON"
+              @click="$emit('copyRequest')"
+            >
+              <Clipboard class="h-4 w-4" />
+            </button>
+          </div>
         </div>
+        <div class="code-pane json-editor-shell min-h-64 w-full resize-y">
+          <!-- eslint-disable vue/no-v-html -- highlightJson() escapes all source text; only its own generated <span> wrappers are unescaped. -->
+          <pre
+            ref="requestBackdropEl"
+            class="json-editor-box json-editor-backdrop"
+            aria-hidden="true"
+            v-html="highlightedRequest"
+          ></pre>
+          <!-- eslint-enable vue/no-v-html -->
+          <textarea
+            v-model="requestJson"
+            class="json-editor-box json-editor-input"
+            spellcheck="false"
+            aria-label="Request JSON"
+            @scroll="syncRequestScroll"
+          />
+        </div>
+        <p
+          v-if="requestError"
+          class="border-signal-red/30 bg-signal-red/10 text-signal-red mt-2 rounded-lg border p-2 text-xs font-semibold"
+        >
+          {{ requestError }}
+        </p>
       </div>
-      <!-- eslint-disable-next-line vue/no-v-html -- highlightJson() escapes all source text; only its own generated <span> wrappers are unescaped. -->
-      <pre v-if="responseText" class="code-pane" v-html="highlightedResponse"></pre>
-      <div v-else class="empty-pane">
-        Telegram response will appear here as syntax-highlighted JSON.
+
+      <div v-else id="response-panel" class="min-w-0">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-bold">Telegram response</h3>
+            <p class="text-ink-700 dark:text-paper-300 mt-0.5 text-xs">
+              Result from the selected method
+            </p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button
+              ref="responseMaximizeBtn"
+              class="icon-button"
+              type="button"
+              title="Maximize response"
+              aria-label="Maximize response"
+              :disabled="!responseText"
+              @click="responseFullscreen = true"
+            >
+              <Maximize2 class="h-4 w-4" />
+            </button>
+            <button
+              class="icon-button"
+              type="button"
+              title="Copy response JSON"
+              aria-label="Copy response JSON"
+              :disabled="!response.payload"
+              @click="$emit('copyResponse')"
+            >
+              <Clipboard class="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+        <!-- eslint-disable-next-line vue/no-v-html -- highlightJson() escapes all source text; only its own generated <span> wrappers are unescaped. -->
+        <pre v-if="responseText" class="code-pane min-h-64" v-html="highlightedResponse"></pre>
+        <div v-else class="empty-pane min-h-64">
+          Telegram response will appear here after you send a request.
+        </div>
       </div>
     </section>
 

@@ -32,26 +32,13 @@ const props = defineProps<{
 const model = defineModel<unknown>({ required: true });
 
 const addButtonClass =
-  'inline-flex items-center gap-1.5 self-start rounded-lg border border-dashed border-ink-950/20 px-3 py-1.5 text-xs font-bold text-ink-700 transition hover:border-signal-blueHover hover:text-signal-blueHover dark:border-paper-50/20 dark:text-paper-300 dark:hover:border-signal-blueBright dark:hover:text-signal-blueBright';
+  'tree-add-button inline-flex items-center gap-1.5 self-start rounded-lg border px-3 py-1.5 text-xs font-bold transition';
 
-const fieldDescriptionClass =
-  'mb-2 mt-1 block rounded border-l-2 border-signal-blue/40 bg-signal-blue/5 py-1 pl-2 text-[0.68rem] italic leading-4 text-ink-700/80 dark:border-signal-blueDark/50 dark:bg-navy-700/60 dark:text-paper-300/80';
+const fieldDescriptionClass = 'builder-description';
 
-// Every "new box" nested inside a TypeFieldEditor (a collapsible field disclosure, array/row item
-// card) shares this one shade + border treatment, so the builder reads as a single family of boxes
-// instead of every level improvising its own tone. A custom type's own field list is deliberately
-// never boxed itself — that would just draw a second, purposeless border around whatever box its
-// caller (an item disclosure, a field disclosure, or the modal's own panel) already drew.
-const boxClass =
-  'rounded-lg border border-ink-950/8 bg-paper-50 dark:border-paper-50/8 dark:bg-navy-800';
-
-// The clickable header row of every disclosure (a custom field folded behind a toggle, a 2D-array
-// item, a plain-array item) — one shared class so all three read as the same kind of control
-// instead of three near-identical hand-tuned rows. Each usage additionally gets its own
-// rounded-t-lg so this row's hover fill respects the parent box's rounded top corners without the
-// box needing overflow-hidden (which would otherwise clip FieldMeta's tooltip popup too).
+// The clickable header row of every disclosure shares one control style across object and array fields.
 const disclosureHeaderClass =
-  'flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1 px-3 py-2.5 text-left transition hover:bg-paper-100 dark:hover:bg-navy-700';
+  'flex w-full flex-wrap items-center justify-between gap-x-2 gap-y-1 px-3 py-2.5 text-left transition';
 
 // Namespaces this instance's disclosure content ids (aria-controls) so multiple TypeFieldEditor
 // instances mounted at once — every recursive level is mounted simultaneously, just visually
@@ -92,6 +79,11 @@ const isDeadEnd = computed(() => {
   if (node.kind === 'union') return !node.branches.some(isRenderableBranch);
   return false;
 });
+
+function isCompositeNode(node: TypeNode): boolean {
+  if (node.kind === 'custom' || node.kind === 'array') return true;
+  return node.kind === 'union' && node.branches.some(isCompositeNode);
+}
 
 function stringifyDraft() {
   try {
@@ -483,7 +475,7 @@ function setUnionValue(value: unknown) {
     v-model="scalarModel"
     as="textarea"
     size="sm"
-    min-height="min-h-24"
+    min-height="min-h-16"
     :label="scalarLabel"
     :placeholder="scalarPlaceholder"
   />
@@ -511,62 +503,72 @@ function setUnionValue(value: unknown) {
     :placeholder="scalarPlaceholder"
   />
 
-  <div v-else-if="node.kind === 'custom'" class="min-w-0 space-y-3.5">
-    <div v-for="entry in customFieldEntries" :key="entry.field.name" class="min-w-0">
-      <div :class="boxClass">
-        <!-- flex-wrap (not a plain single-line flex row): the hint+chevron chunk on the right is
+  <div v-else-if="node.kind === 'custom'" class="tree-list min-w-0">
+    <div
+      v-for="entry in customFieldEntries"
+      :key="entry.field.name"
+      :class="isCompositeNode(entry.childNode) ? 'tree-card' : 'tree-field-row'"
+      :data-depth="Math.min(depth, 2)"
+    >
+      <!-- flex-wrap (not a plain single-line flex row): the hint+chevron chunk on the right is
         shrink-0 and won't give up width, so on a narrow container a long field name used to get
         squeezed into whatever sliver was left over and wrap across many cramped lines. Letting the
         row wrap drops the hint+chevron to their own line below instead, so the label gets the full
         row width to wrap into at most a couple of lines. -->
-        <button
-          type="button"
-          :class="[disclosureHeaderClass, 'rounded-t-lg']"
-          :aria-expanded="isExpanded(entry.field.name)"
-          :aria-controls="`${uid}-f-${entry.field.name}`"
-          @click="toggleExpanded(entry.field.name)"
-        >
-          <FieldMeta
-            size="sm"
-            :name="displayName(entry.field.name)"
-            :required="entry.field.required"
-            :type="entry.childNode.kind !== 'union' ? entry.field.type : undefined"
-          />
-          <span class="text-ink-700/60 dark:text-paper-300/60 flex shrink-0 items-center gap-1.5">
-            <span class="max-w-[10rem] truncate text-[0.68rem] font-semibold">
-              {{ subFieldHint(entry.childNode, fieldValue(entry.field.name), entry.visited) }}
-            </span>
-            <ChevronDown
-              class="h-3.5 w-3.5 shrink-0 transition-transform duration-200"
-              :class="{ 'rotate-180': isExpanded(entry.field.name) }"
-            />
+      <button
+        type="button"
+        :class="[
+          disclosureHeaderClass,
+          isCompositeNode(entry.childNode) ? 'tree-card-header' : 'tree-field-header',
+        ]"
+        :aria-expanded="isExpanded(entry.field.name)"
+        :aria-controls="`${uid}-f-${entry.field.name}`"
+        @click="toggleExpanded(entry.field.name)"
+      >
+        <FieldMeta
+          size="sm"
+          :name="displayName(entry.field.name)"
+          :required="entry.field.required"
+          :type="entry.childNode.kind !== 'union' ? entry.field.type : undefined"
+        />
+        <span class="text-ink-700/60 dark:text-paper-300/60 flex shrink-0 items-center gap-1.5">
+          <span class="max-w-[10rem] truncate text-[0.68rem] font-semibold">
+            {{ subFieldHint(entry.childNode, fieldValue(entry.field.name), entry.visited) }}
           </span>
-        </button>
-        <div
-          :id="`${uid}-f-${entry.field.name}`"
-          class="grid transition-[grid-template-rows] duration-200 ease-out"
-          :style="{ gridTemplateRows: isExpanded(entry.field.name) ? '1fr' : '0fr' }"
-        >
-          <div class="overflow-hidden">
-            <div class="border-ink-950/8 dark:border-paper-50/8 border-t p-3.5">
-              <ExpandableText
-                v-if="entry.field.description"
-                tag="p"
-                :text="entry.field.description"
-                :lines="2"
-                :class="fieldDescriptionClass"
-              />
-              <TypeFieldEditor
-                class="mt-1.5"
-                :node="entry.childNode"
-                :schema="schema"
-                :depth="depth + 1"
-                :visited="entry.visited"
-                :field="entry.field"
-                :model-value="fieldValue(entry.field.name)"
-                @update:model-value="(value) => setField(entry.field.name, value)"
-              />
-            </div>
+          <ChevronDown
+            class="h-3.5 w-3.5 shrink-0 transition-transform duration-200"
+            :class="{ 'rotate-180': isExpanded(entry.field.name) }"
+          />
+        </span>
+      </button>
+      <div
+        :id="`${uid}-f-${entry.field.name}`"
+        :inert="!isExpanded(entry.field.name)"
+        class="grid transition-[grid-template-rows] duration-200 ease-out"
+        :style="{ gridTemplateRows: isExpanded(entry.field.name) ? '1fr' : '0fr' }"
+      >
+        <div class="overflow-hidden">
+          <div
+            :class="isCompositeNode(entry.childNode) ? 'tree-card-content' : 'tree-field-content'"
+          >
+            <ExpandableText
+              v-if="entry.field.description"
+              icon-only
+              tag="p"
+              :text="entry.field.description"
+              :lines="2"
+              :class="fieldDescriptionClass"
+            />
+            <TypeFieldEditor
+              class="mt-1.5"
+              :node="entry.childNode"
+              :schema="schema"
+              :depth="depth + 1"
+              :visited="entry.visited"
+              :field="entry.field"
+              :model-value="fieldValue(entry.field.name)"
+              @update:model-value="(value) => setField(entry.field.name, value)"
+            />
           </div>
         </div>
       </div>
@@ -577,7 +579,8 @@ function setUnionValue(value: unknown) {
     <div
       v-for="(row, rowIndex) in rows2D"
       :key="rowIndex"
-      class="border-ink-950/8 bg-paper-100 dark:border-paper-50/8 dark:bg-navy-900 rounded-lg border p-3"
+      class="tree-card rounded-xl p-3"
+      :data-depth="Math.min(depth, 2)"
       :aria-label="`Row ${rowIndex + 1}`"
     >
       <div class="mb-2.5 flex items-center justify-between gap-2">
@@ -614,11 +617,16 @@ function setUnionValue(value: unknown) {
           </button>
         </div>
       </div>
-      <div class="space-y-2.5">
-        <div v-for="(item, itemIndex) in row" :key="itemIndex" :class="boxClass">
+      <div class="tree-list mt-2.5">
+        <div
+          v-for="(item, itemIndex) in row"
+          :key="itemIndex"
+          class="tree-card"
+          :data-depth="Math.min(depth + 1, 2)"
+        >
           <button
             type="button"
-            :class="[disclosureHeaderClass, 'rounded-t-lg text-xs font-bold']"
+            :class="[disclosureHeaderClass, 'tree-card-header text-xs font-bold']"
             :aria-expanded="isExpanded(`${rowIndex}:${itemIndex}`)"
             :aria-controls="`${uid}-r-${rowIndex}-${itemIndex}`"
             @click="toggleExpanded(`${rowIndex}:${itemIndex}`)"
@@ -644,11 +652,12 @@ function setUnionValue(value: unknown) {
           </button>
           <div
             :id="`${uid}-r-${rowIndex}-${itemIndex}`"
+            :inert="!isExpanded(`${rowIndex}:${itemIndex}`)"
             class="grid transition-[grid-template-rows] duration-200 ease-out"
             :style="{ gridTemplateRows: isExpanded(`${rowIndex}:${itemIndex}`) ? '1fr' : '0fr' }"
           >
             <div class="overflow-hidden">
-              <div class="border-ink-950/8 dark:border-paper-50/8 border-t p-3.5">
+              <div class="tree-card-content">
                 <TypeFieldEditor
                   :node="node.of.of"
                   :schema="schema"
@@ -728,11 +737,16 @@ function setUnionValue(value: unknown) {
     </button>
   </div>
 
-  <div v-else-if="node.kind === 'array'" class="min-w-0 space-y-2.5">
-    <div v-for="(item, index) in items" :key="index" :class="boxClass">
+  <div v-else-if="node.kind === 'array'" class="tree-list min-w-0">
+    <div
+      v-for="(item, index) in items"
+      :key="index"
+      class="tree-card"
+      :data-depth="Math.min(depth, 2)"
+    >
       <button
         type="button"
-        :class="[disclosureHeaderClass, 'rounded-t-lg text-xs font-bold']"
+        :class="[disclosureHeaderClass, 'tree-card-header text-xs font-bold']"
         :aria-expanded="isExpanded(`i:${index}`)"
         :aria-controls="`${uid}-i-${index}`"
         @click="toggleExpanded(`i:${index}`)"
@@ -754,11 +768,12 @@ function setUnionValue(value: unknown) {
       </button>
       <div
         :id="`${uid}-i-${index}`"
+        :inert="!isExpanded(`i:${index}`)"
         class="grid transition-[grid-template-rows] duration-200 ease-out"
         :style="{ gridTemplateRows: isExpanded(`i:${index}`) ? '1fr' : '0fr' }"
       >
         <div class="overflow-hidden">
-          <div class="border-ink-950/8 dark:border-paper-50/8 border-t p-3.5">
+          <div class="tree-card-content">
             <TypeFieldEditor
               :node="node.of"
               :schema="schema"
@@ -784,19 +799,15 @@ function setUnionValue(value: unknown) {
       v-if="renderableBranchIndices.length > 1"
       role="group"
       :aria-label="`${field ? displayName(field.name) : 'Value'} type`"
-      class="bg-paper-200 dark:bg-navy-900 mb-3 flex scrollbar-none gap-1.5 overflow-x-auto rounded-lg p-1"
+      class="tree-variant-list mb-3 flex scrollbar-none gap-1 overflow-x-auto rounded-lg p-1"
     >
       <button
         v-for="index in renderableBranchIndices"
         :key="index"
         type="button"
         :aria-pressed="effectiveVariant === index"
-        class="shrink-0 rounded-md px-2.5 py-1.5 text-xs font-bold transition"
-        :class="
-          effectiveVariant === index
-            ? 'bg-paper-50 text-signal-blueHover shadow-soft dark:bg-navy-700 dark:text-signal-blueBright'
-            : 'text-ink-700 hover:text-signal-blueHover dark:text-paper-300 dark:hover:text-signal-blueBright'
-        "
+        class="tree-variant-button shrink-0 rounded-md px-2.5 py-1.5 text-xs font-bold transition"
+        :class="{ 'tree-variant-button--active': effectiveVariant === index }"
         @click="selectVariant(index)"
       >
         {{ branchLabel(node.branches[index]) }}

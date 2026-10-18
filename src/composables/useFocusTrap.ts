@@ -14,7 +14,9 @@ export function useFocusTrap(dialogRef: Ref<HTMLElement | null>, onEscape: () =>
       root.querySelectorAll<HTMLElement>(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       ),
-    ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    ).filter(
+      (el) => !el.hasAttribute('disabled') && !el.closest('[inert]') && el.offsetParent !== null,
+    );
   }
 
   function onKeydown(event: KeyboardEvent) {
@@ -25,10 +27,16 @@ export function useFocusTrap(dialogRef: Ref<HTMLElement | null>, onEscape: () =>
     }
     if (event.key !== 'Tab') return;
     const els = focusableEls();
-    if (els.length === 0) return;
+    if (els.length === 0) {
+      event.preventDefault();
+      return;
+    }
     const first = els[0];
     const last = els[els.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
+    if (
+      event.shiftKey &&
+      (document.activeElement === first || document.activeElement === dialogRef.value)
+    ) {
       event.preventDefault();
       last.focus();
     } else if (!event.shiftKey && document.activeElement === last) {

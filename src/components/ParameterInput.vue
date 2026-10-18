@@ -79,9 +79,7 @@ function onFile(event: Event) {
 </script>
 
 <template>
-  <div
-    class="border-ink-950/8 bg-paper-50 dark:border-paper-50/8 dark:bg-navy-800 min-w-0 rounded-xl border p-4"
-  >
+  <div class="parameter-card">
     <FieldMeta
       :name="displayName(parameter.name)"
       :required="parameter.required"
@@ -90,7 +88,7 @@ function onFile(event: Event) {
     />
     <ExpandableText
       tag="blockquote"
-      class="border-signal-blue/40 bg-signal-blue/5 text-ink-700 dark:border-signal-blueDark/50 dark:bg-navy-700 dark:text-paper-300 mt-3 min-h-5 rounded-md border-l-4 p-1 pl-2 text-xs leading-5 italic"
+      class="field-description mt-3 min-h-5 rounded-md border-s-4 p-1 ps-2 text-xs leading-5 italic"
       :text="parameter.description"
       :lines="2"
     />

@@ -54,21 +54,45 @@
 
   :root {
     color-scheme: light;
-    --page-bg: #ffffff;
+    --page-bg: #f4f7fa;
     --panel-bg: #ffffff;
-    --aurora-1: rgb(0 136 204 / 0.06);
-    --aurora-2: rgb(61 214 198 / 0.05);
-    --aurora-3: rgb(169 227 75 / 0.04);
+    --surface-muted: #f7f9fb;
+    --tree-surface-1: #f7f9fb;
+    --tree-surface-2: #ffffff;
+    --tree-surface-3: #f1f5f8;
+    --tree-line-color: rgb(15 23 42 / 0.075);
+    --tree-hover-surface: rgb(0 136 204 / 0.055);
+    --tree-active-surface: rgb(0 136 204 / 0.09);
+    --tree-active-text: #0077b3;
+    --line-color: rgb(15 23 42 / 0.055);
+    --control-line: rgb(15 23 42 / 0.12);
+    --separator-color: rgb(15 23 42 / 0.07);
+    --surface-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 12px 32px rgb(15 23 42 / 0.035);
+    --aurora-1: rgb(0 136 204 / 0.035);
+    --aurora-2: rgb(61 214 198 / 0.025);
+    --aurora-3: rgb(169 227 75 / 0.02);
     background: var(--page-bg);
   }
 
   :root[data-theme='dark'] {
     color-scheme: dark;
     --page-bg: #17212b;
-    --panel-bg: #232e3c;
-    --aurora-1: rgb(51 144 236 / 0.12);
-    --aurora-2: rgb(61 214 198 / 0.07);
-    --aurora-3: rgb(94 176 243 / 0.06);
+    --panel-bg: #1c2733;
+    --surface-muted: #202d3a;
+    --tree-surface-1: #202d3a;
+    --tree-surface-2: #253544;
+    --tree-surface-3: #2a3d4d;
+    --tree-line-color: rgb(255 255 255 / 0.085);
+    --tree-hover-surface: rgb(51 144 236 / 0.1);
+    --tree-active-surface: rgb(51 144 236 / 0.16);
+    --tree-active-text: #5eb0f3;
+    --line-color: rgb(255 255 255 / 0.06);
+    --control-line: rgb(255 255 255 / 0.12);
+    --separator-color: rgb(255 255 255 / 0.07);
+    --surface-shadow: 0 1px 2px rgb(0 0 0 / 0.12), 0 14px 34px rgb(0 0 0 / 0.12);
+    --aurora-1: rgb(51 144 236 / 0.07);
+    --aurora-2: rgb(61 214 198 / 0.035);
+    --aurora-3: rgb(94 176 243 / 0.025);
     background: var(--page-bg);
   }
 
@@ -94,11 +118,7 @@
     /* A static, three-stop wash (no motion on the page itself — see .breathe usages for where the
        app's small animation budget goes instead) so the page reads as one considered surface
        instead of a flat solid fill. */
-    background:
-      radial-gradient(1100px circle at 12% -10%, var(--aurora-1), transparent 55%),
-      radial-gradient(900px circle at 100% 8%, var(--aurora-2), transparent 50%),
-      radial-gradient(800px circle at 20% 120%, var(--aurora-3), transparent 55%), var(--page-bg);
-    background-attachment: fixed;
+    background: var(--page-bg);
     color: #000000;
     font-family:
       -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Lucida Grande', ui-sans-serif,
@@ -184,15 +204,351 @@
 
 @layer components {
   .app-shell {
-    @apply bg-paper-50 text-ink-950 dark:text-paper-50 min-h-screen transition-colors duration-200 dark:bg-(--page-bg);
+    @apply text-ink-950 dark:text-paper-50 min-h-screen transition-colors duration-200;
+    background: var(--page-bg);
   }
 
   .panel {
-    @apply border-ink-950/8 bg-paper-50/95 shadow-soft dark:border-paper-50/8 dark:shadow-darkSoft min-w-0 border backdrop-blur-xl dark:bg-(--panel-bg);
+    @apply min-w-0 rounded-2xl border;
+    border-color: var(--line-color);
+    background: var(--panel-bg);
+    box-shadow: var(--surface-shadow);
+  }
+
+  .modal-stage {
+    @apply fixed inset-0 z-50 grid place-items-center p-3 sm:p-6;
+  }
+
+  .modal-backdrop {
+    @apply absolute inset-0 backdrop-blur-sm;
+    background: rgb(8 17 26 / 0.55);
+  }
+
+  .modal-dialog {
+    @apply relative flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl outline-none;
+    max-height: calc(100dvh - 3rem);
+    box-shadow: 0 24px 80px rgb(0 0 0 / 0.25);
+  }
+
+  .modal-dialog--compact {
+    max-width: 34rem;
+  }
+  .modal-dialog--fullscreen {
+    max-width: 80rem;
+    height: calc(100dvh - 3rem);
+  }
+
+  .modal-header {
+    @apply flex shrink-0 items-center gap-3 px-5 py-5 sm:px-6;
+    border-block-end: 1px solid var(--separator-color);
+  }
+
+  .modal-symbol,
+  .token-symbol {
+    @apply grid h-11 w-11 shrink-0 place-items-center rounded-2xl;
+    color: var(--tree-active-text);
+    background: var(--tree-active-surface);
+  }
+
+  .modal-content {
+    @apply min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6;
+  }
+
+  .modal-content--fullscreen {
+    @apply flex flex-col overflow-hidden;
+  }
+
+  .builder-description {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin-block: 0 0.75rem;
+    font-style: normal;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--color-ink-700);
+  }
+
+  :root[data-theme='dark'] .builder-description {
+    color: var(--color-paper-300);
+  }
+
+  .modal-footer {
+    @apply flex shrink-0 flex-wrap items-center gap-3 px-5 py-4 sm:px-6;
+    border-block-start: 1px solid var(--separator-color);
+    background: var(--surface-muted);
+  }
+
+  .modal-close {
+    @apply grid h-9 w-9 place-items-center rounded-full transition;
+    color: var(--color-ink-700);
+    background: var(--surface-muted);
+  }
+
+  :root[data-theme='dark'] .modal-close {
+    color: var(--color-paper-300);
+  }
+  .modal-close:hover {
+    color: var(--tree-active-text);
+    background: var(--tree-active-surface);
+  }
+
+  .modal-primary,
+  .modal-secondary {
+    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition;
+  }
+
+  .modal-primary {
+    @apply bg-signal-blue hover:bg-signal-blueHover dark:bg-signal-blueDark dark:hover:bg-signal-blueHover text-white;
+  }
+  .modal-secondary {
+    background: var(--panel-bg);
+    box-shadow: inset 0 0 0 1px var(--control-line);
+  }
+  .modal-secondary:hover {
+    background: var(--tree-hover-surface);
+  }
+  .modal-primary:focus-visible,
+  .modal-secondary:focus-visible,
+  .modal-close:focus-visible {
+    outline: 2px solid var(--tree-active-text);
+    outline-offset: 3px;
+  }
+
+  .token-card {
+    @apply relative min-w-0 rounded-2xl p-4 sm:p-5;
+    background:
+      linear-gradient(115deg, var(--tree-active-surface), transparent 75%), var(--surface-muted);
+    box-shadow: inset 0 0 0 1px var(--line-color);
+  }
+
+  .token-status {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[0.65rem] font-semibold;
+    color: var(--color-ink-700);
+    background: var(--panel-bg);
+  }
+
+  :root[data-theme='dark'] .token-status {
+    color: var(--color-paper-300);
+  }
+  .token-status.token-status--filled {
+    color: var(--tree-active-text);
+  }
+  .token-endpoint {
+    color: var(--tree-active-text);
+  }
+
+  .field-tooltip {
+    --tooltip-margin: 12px;
+    @apply text-ink-950 dark:text-paper-50 pointer-events-none fixed z-60 rounded-lg border px-3 py-2 font-mono text-xs wrap-anywhere;
+    width: max-content;
+    max-width: min(20rem, calc(100vw - 2 * var(--tooltip-margin)));
+    border-color: var(--control-line);
+    background: var(--panel-bg);
+    box-shadow: var(--surface-shadow);
+  }
+
+  .surface-well {
+    background: var(--surface-muted);
+  }
+
+  .parameter-card {
+    @apply min-w-0 rounded-xl border p-4;
+    border-color: var(--line-color);
+    background: var(--panel-bg);
+  }
+
+  .tree-list {
+    @apply grid min-w-0;
+    gap: 0;
+  }
+
+  .tree-card {
+    @apply min-w-0 rounded-xl border;
+    border-color: var(--tree-line-color);
+    background: var(--tree-surface-1);
+  }
+
+  .tree-card[data-depth='1'] {
+    background: var(--tree-surface-2);
+  }
+
+  .tree-card[data-depth='2'] {
+    background: var(--tree-surface-3);
+  }
+
+  .tree-card + .tree-card,
+  .tree-card + .tree-field-row,
+  .tree-field-row + .tree-card {
+    margin-block-start: 0.625rem;
+  }
+
+  .tree-field-row {
+    padding-block: 0.375rem;
+  }
+
+  .tree-field-row + .tree-field-row {
+    border-block-start: 1px solid var(--separator-color);
+  }
+
+  .tree-field-header {
+    border-radius: var(--radius-lg);
+  }
+
+  .tree-card-header {
+    border-radius: calc(var(--radius-xl) - 1px) calc(var(--radius-xl) - 1px) 0 0;
+  }
+
+  .tree-card-header:hover,
+  .tree-field-header:hover {
+    background: var(--tree-hover-surface);
+  }
+
+  .tree-card-header[aria-expanded='true'],
+  .tree-field-header[aria-expanded='true'] {
+    color: var(--tree-active-text);
+  }
+
+  .tree-card-header:focus-visible,
+  .tree-field-header:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 2px solid var(--color-signal-blue);
+    outline-offset: -2px;
+  }
+
+  :root[data-theme='dark'] .tree-card-header:focus-visible,
+  :root[data-theme='dark'] .tree-field-header:focus-visible {
+    outline-color: var(--color-signal-blueDark);
+  }
+
+  .tree-card-content {
+    border-block-start: 1px solid var(--separator-color);
+    padding: 0.875rem;
+  }
+
+  .tree-field-content {
+    padding: 0.25rem 0.75rem 0.875rem;
+  }
+
+  .field-description {
+    border-inline-start: 2px solid rgb(0 136 204 / 0.4);
+    background: rgb(0 136 204 / 0.05);
+    color: rgb(97 99 101 / 0.85);
+  }
+
+  :root[data-theme='dark'] .field-description {
+    border-inline-start-color: rgb(51 144 236 / 0.5);
+    background: rgb(35 46 60 / 0.7);
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  .tree-add-button {
+    margin-block-start: 0.625rem;
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--tree-active-text) 45%, transparent);
+    background: var(--tree-hover-surface);
+    color: var(--tree-active-text);
+  }
+
+  .tree-add-button:hover {
+    border-color: var(--color-signal-blue);
+    background: var(--tree-hover-surface);
+    color: var(--tree-active-text);
+  }
+
+  .tree-add-button:focus-visible,
+  .tree-variant-button:focus-visible {
+    outline: 2px solid var(--color-signal-blue);
+    outline-offset: 2px;
+  }
+
+  :root[data-theme='dark'] .tree-add-button:focus-visible,
+  :root[data-theme='dark'] .tree-variant-button:focus-visible {
+    outline-color: var(--color-signal-blueDark);
+  }
+
+  .tree-variant-list {
+    background: var(--surface-muted);
+  }
+
+  .tree-variant-button {
+    color: var(--color-ink-700);
+  }
+
+  :root[data-theme='dark'] .tree-variant-button {
+    color: var(--color-paper-300);
+  }
+
+  .tree-variant-button:hover,
+  .tree-variant-button--active {
+    color: var(--tree-active-text);
+  }
+
+  .tree-variant-button--active {
+    background: var(--panel-bg);
+    box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
+  }
+
+  :root[data-theme='dark'] .tree-variant-button--active {
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.3);
+  }
+
+  @media (max-width: 40rem) {
+    .tree-card + .tree-card,
+    .tree-card + .tree-field-row,
+    .tree-field-row + .tree-card {
+      margin-block-start: 0.5rem;
+    }
+
+    .tree-card-content,
+    .tree-field-content {
+      padding: 0.75rem;
+    }
+  }
+
+  .field-shell {
+    @apply relative flex min-w-0 items-stretch rounded-lg border transition focus-within:ring-4;
+    border-color: var(--control-line);
+    background: var(--panel-bg);
+  }
+
+  .field-shell:focus-within {
+    border-color: var(--color-signal-blue);
+    --tw-ring-color: rgb(0 136 204 / 0.15);
+  }
+
+  :root[data-theme='dark'] .field-shell:focus-within {
+    border-color: var(--color-signal-blueDark);
+    --tw-ring-color: rgb(51 144 236 / 0.25);
+  }
+
+  .surface-divider {
+    border-color: var(--separator-color);
   }
 
   .control {
-    @apply border-ink-950/8 bg-paper-100 text-ink-950 hover:border-ink-950/20 focus:border-signal-blue focus:ring-signal-blue/15 dark:border-paper-50/8 dark:bg-navy-900 dark:text-paper-50 dark:hover:border-paper-50/20 dark:focus:border-signal-blueDark dark:focus:ring-signal-blueDark/25 w-full min-w-0 rounded-lg border px-3 transition duration-200 ease-out outline-none focus:ring-4;
+    @apply text-ink-950 dark:text-paper-50 w-full min-w-0 rounded-lg border px-3 transition duration-200 ease-out outline-none focus:ring-4;
+    border-color: var(--control-line);
+    background: var(--panel-bg);
+  }
+
+  .control:hover {
+    border-color: var(--color-signal-blue);
+  }
+
+  .control:focus {
+    border-color: var(--color-signal-blue);
+    --tw-ring-color: rgb(0 136 204 / 0.15);
+  }
+
+  :root[data-theme='dark'] .control:hover,
+  :root[data-theme='dark'] .control:focus {
+    border-color: var(--color-signal-blueDark);
+  }
+
+  :root[data-theme='dark'] .control:focus {
+    --tw-ring-color: rgb(51 144 236 / 0.25);
   }
 
   .icon-button {
@@ -209,11 +565,21 @@
   }
 
   .code-pane {
-    @apply bg-ink-950 text-paper-100 max-h-[34rem] overflow-auto rounded-xl p-4 font-mono text-[0.82rem] leading-6 shadow-inner dark:bg-black;
+    @apply text-paper-100 max-h-[34rem] overflow-auto rounded-xl p-4 font-mono text-[0.82rem] leading-6;
+    background: #172b3a;
+  }
+
+  :root[data-theme='dark'] .code-pane {
+    background: #111b24;
   }
 
   .empty-pane {
-    @apply border-ink-950/15 bg-paper-100 text-ink-700 dark:border-paper-50/15 dark:bg-navy-800 dark:text-paper-300 rounded-xl border border-dashed p-4 text-sm leading-6;
+    @apply text-ink-700 dark:text-paper-300 rounded-xl p-4 text-sm leading-6;
+    background: var(--surface-muted);
+  }
+
+  .section-kicker {
+    @apply text-ink-700 dark:text-paper-300 text-[0.68rem] font-bold tracking-[0.12em] uppercase;
   }
 }
 

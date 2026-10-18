@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { computed, onErrorCaptured, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
+import {
+  computed,
+  nextTick,
+  onErrorCaptured,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  watchEffect,
+} from 'vue';
 import { Bot, Moon, Sun, Monitor, CodeXml, Send, TriangleAlert } from '@lucide/vue';
 import { version as appVersion } from '../package.json';
 import ExpandableText from '@/components/ExpandableText.vue';
@@ -42,10 +51,37 @@ const {
 } = studio;
 
 const homeHref = import.meta.env.BASE_URL;
+const mobileSection = ref<'methods' | 'builder' | 'results'>('methods');
+const resultTab = ref<'request' | 'response'>('request');
+const mobileSections = [
+  { id: 'methods', label: 'Methods' },
+  { id: 'builder', label: 'Request' },
+  { id: 'results', label: 'Response' },
+] as const;
+
+function onSelectMethod(method: Parameters<typeof selectMethod>[0]) {
+  selectMethod(method);
+  mobileSection.value = 'builder';
+  resultTab.value = 'request';
+}
+
+function setMobileSection(section: (typeof mobileSections)[number]['id']) {
+  mobileSection.value = section;
+  if (section === 'builder') resultTab.value = 'request';
+  if (section === 'results') resultTab.value = 'response';
+}
+
+async function submitAndShowResult() {
+  const pendingRequest = submit();
+  await nextTick();
+  if (response.value.status === 'loading') setMobileSection('results');
+  await pendingRequest;
+}
 
 function onLogoClick(event: MouseEvent) {
   if (!navigateOnClick(event)) return;
   goHome();
+  mobileSection.value = 'methods';
 }
 const theme = ref(localStorage.getItem('bot-studio.theme') || 'system');
 const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -98,6 +134,7 @@ onMounted(async () => {
     privacyNoticeOpen.value = true;
   }
   await loadSchema();
+  if (selected.value || notFound.value) mobileSection.value = 'builder';
 });
 
 onUnmounted(() => {
@@ -111,9 +148,9 @@ onUnmounted(() => {
     <PrivacyNoticeModal v-model:open="privacyNoticeOpen" />
 
     <header
-      class="border-ink-950/8 bg-paper-50/84 dark:border-paper-50/8 sticky top-0 z-30 border-b px-4 py-3 backdrop-blur-[25px] sm:px-6 dark:bg-(--page-bg) dark:backdrop-blur-none"
+      class="border-ink-950/8 dark:border-paper-50/8 sticky top-0 z-30 border-b bg-(--page-bg)/90 px-4 py-3 sm:px-6"
     >
-      <div class="mx-auto flex w-full max-w-[1540px] flex-row items-center justify-between gap-3">
+      <div class="mx-auto flex w-full max-w-[1680px] flex-row items-center justify-between gap-3">
         <a
           :href="homeHref"
           class="group focus-visible:ring-signal-blue/15 dark:focus-visible:ring-signal-blueDark/25 flex min-w-0 items-center gap-3 rounded-lg transition focus:outline-none focus-visible:ring-4"
@@ -122,11 +159,11 @@ onUnmounted(() => {
         >
           <div class="relative shrink-0">
             <span
-              class="animate-breathe bg-signal-blue/50 dark:bg-signal-blueDark/50 absolute inset-0 -z-10 rounded-xl blur-md"
+              class="bg-signal-blue/10 dark:bg-signal-blueDark/15 absolute inset-0 -z-10 rounded-xl"
               aria-hidden="true"
             />
             <div
-              class="from-signal-blue to-signal-blueHover text-paper-50 shadow-glow dark:from-signal-blueDark dark:to-signal-blueBright dark:shadow-glowDark relative grid h-11 w-11 place-items-center rounded-xl bg-linear-to-br transition-transform duration-300 ease-out group-hover:scale-105 group-hover:-rotate-3"
+              class="bg-signal-blue text-paper-50 dark:bg-signal-blueDark relative grid h-10 w-10 place-items-center rounded-xl transition-transform duration-200 group-hover:scale-[1.03]"
             >
               <Bot class="h-6 w-6" />
             </div>
@@ -137,13 +174,15 @@ onUnmounted(() => {
             >
               Bot Studio
             </h1>
-            <span class="text-ink-700 dark:text-paper-300 shrink-0 font-mono text-xs font-bold">
+            <span
+              class="text-ink-700 dark:text-paper-300 hidden shrink-0 font-mono text-xs font-bold sm:inline"
+            >
               v{{ appVersion }}
             </span>
           </div>
         </a>
 
-        <div class="flex flex-wrap items-center gap-2">
+        <div class="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             class="group/theme icon-button relative"
@@ -182,9 +221,30 @@ onUnmounted(() => {
       </div>
     </header>
 
+    <nav
+      class="border-ink-950/8 dark:border-paper-50/8 sticky top-[65px] z-20 mx-auto grid w-full max-w-[1680px] grid-cols-3 gap-1 border-b bg-(--page-bg)/95 px-3 py-2 backdrop-blur-md xl:hidden"
+      aria-label="Workspace sections"
+    >
+      <button
+        v-for="section in mobileSections"
+        :key="section.id"
+        type="button"
+        class="rounded-lg px-3 py-2.5 text-xs font-semibold transition"
+        :class="
+          mobileSection === section.id
+            ? 'bg-paper-50 text-signal-blueHover dark:bg-navy-800 dark:text-signal-blueBright shadow-sm'
+            : 'text-ink-700 dark:text-paper-300'
+        "
+        :aria-pressed="mobileSection === section.id"
+        @click="setMobileSection(section.id)"
+      >
+        {{ section.label }}
+      </button>
+    </nav>
+
     <main
       v-if="fatalError"
-      class="mx-auto flex w-full max-w-[1540px] flex-col items-center gap-3 p-10 text-center"
+      class="mx-auto flex w-full max-w-[1680px] flex-col items-center gap-3 p-10 text-center"
     >
       <TriangleAlert class="text-signal-red h-8 w-8" />
       <h2 class="text-2xl leading-none font-black tracking-normal">Something went wrong</h2>
@@ -202,31 +262,33 @@ onUnmounted(() => {
 
     <main
       v-else
-      class="mx-auto grid w-full max-w-[1540px] grid-cols-1 gap-4 p-3 sm:p-4 xl:grid-cols-[19rem_minmax(0,1.7fr)_23rem]"
+      class="mx-auto grid w-full max-w-[1680px] grid-cols-1 items-start gap-4 p-3 sm:gap-5 sm:p-5 xl:grid-cols-[17rem_minmax(0,1.45fr)_minmax(22rem,0.9fr)] xl:p-6"
     >
       <MethodSidebar
         v-model:search="search"
         v-model:category="category"
+        :class="mobileSection === 'methods' ? '' : 'hidden xl:block'"
         :categories="categories"
         :methods="filteredMethods"
         :selected-name="selected?.name"
         :loading="loadingSchema"
-        @select="selectMethod"
+        @select="onSelectMethod"
       />
 
-      <section class="panel rounded-2xl p-4 sm:p-5">
+      <section :class="[mobileSection === 'builder' ? '' : 'hidden xl:block', 'panel p-4 sm:p-6']">
         <NotFoundView
           v-if="notFound"
           :path="notFoundPath"
           :suggestions="notFoundSuggestions"
-          @select="selectMethod"
+          @select="onSelectMethod"
         />
         <template v-else>
           <div class="border-ink-950/8 dark:border-paper-50/8 border-b pb-5">
             <div class="flex min-w-0 items-start justify-between gap-3">
               <div class="min-w-0">
+                <p class="section-kicker mb-2">Method workspace</p>
                 <h2
-                  class="text-3xl leading-none font-black tracking-normal wrap-break-word sm:text-5xl"
+                  class="text-2xl leading-tight font-bold tracking-tight wrap-break-word sm:text-3xl"
                 >
                   {{ selected?.name || 'Select a method' }}
                 </h2>
@@ -256,7 +318,7 @@ onUnmounted(() => {
 
           <TokenBox v-model="token" :method-name="selected?.name" />
 
-          <form class="mt-5" @submit.prevent="submit">
+          <form class="mt-5" @submit.prevent="submitAndShowResult">
             <ParameterForm v-model="values" :method="selected" :schema="schema" />
 
             <div
@@ -282,6 +344,8 @@ onUnmounted(() => {
 
       <ResultRail
         v-model:request-json="requestJson"
+        v-model:active-tab="resultTab"
+        :class="mobileSection === 'results' ? '' : 'hidden xl:block'"
         :request-error="requestJsonError"
         :response="displayResponse"
         @copy-request="copy(requestJson, 'Request JSON')"
@@ -293,7 +357,7 @@ onUnmounted(() => {
     </main>
 
     <footer
-      class="text-ink-700 dark:text-paper-300 mx-auto mt-8 flex w-full max-w-[1540px] flex-col items-center justify-center gap-2 px-4 pb-5 text-center text-sm font-semibold sm:flex-row sm:justify-between sm:text-left"
+      class="text-ink-700 dark:text-paper-300 mx-auto mt-5 flex w-full max-w-[1680px] flex-col items-center justify-center gap-2 px-6 pb-5 text-center text-xs font-medium sm:flex-row sm:justify-between sm:text-left"
     >
       <div>
         Powered by
